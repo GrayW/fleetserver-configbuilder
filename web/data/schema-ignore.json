@@ -4,12 +4,16 @@
     "sandbox_enabled",
     "endpointrequestsizeoverrides"
   ],
+  "license": [
+    "enforce_host_limit"
+  ],
   "osquery": [
     "status_log_file",
     "result_log_file",
     "enable_log_rotation"
   ],
   "_reasons": {
+    "license.enforce_host_limit": "Not applicable to self-hosted setups.",
     "server.sandbox_enabled": "Hidden in Fleet (man.hideConfig); Fleet Sandbox no longer exists.",
     "osquery.status_log_file": "Deprecated; replaced by filesystem.status_log_file.",
     "osquery.result_log_file": "Deprecated; replaced by filesystem.result_log_file.",
