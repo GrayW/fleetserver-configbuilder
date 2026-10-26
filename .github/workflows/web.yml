@@ -1,0 +1,60 @@
+name: Config helper site
+
+on:
+  push:
+    branches: [main]
+    paths: ['web/**', 'resources/config.go', '.github/workflows/web.yml']
+  pull_request:
+    paths: ['web/**', 'resources/config.go', '.github/workflows/web.yml']
+  schedule:
+    # Mondays at 07:00 UTC: has Fleet's latest release changed its config?
+    - cron: '0 7 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Unit tests
+        run: node --test web/test/*.test.mjs
+
+      # If this step fails (Fleet added or removed a config option), the job stops here, nothing
+      # is deployed, and the last good site stays live. Fix web/data/schema.json (or add the
+      # field to web/data/schema-ignore.json with a reason) and push.
+      - name: Check the schema against Fleet's latest release
+        run: node web/scripts/check-schema.mjs
+
+      - name: Build page
+        run: node web/scripts/build.mjs
+
+      - uses: actions/configure-pages@v5
+        if: github.event_name != 'pull_request'
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
+        with:
+          path: web/dist
+
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

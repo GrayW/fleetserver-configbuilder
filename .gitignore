@@ -1,0 +1,5 @@
+# Build output of web/scripts/build.mjs
+/web/dist/
+
+# macOS
+.DS_Store

@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- The browser enforces this: no network requests of any kind can leave this page. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fleet server config helper</title>
+<style>
+:root{
+  color-scheme: light dark;
+  --bg:#F3F6F4; --surface:#FFFFFF; --ink:#15212B; --muted:#51606C;
+  --line:#D3DBE0; --line-strong:#8C9BA6;
+  --accent:#0B7A63; --accent-ink:#FFFFFF; --accent-soft:#E3F3EE;
+  --warn-bg:#FFF3D1; --warn-ink:#4F3A00; --warn-line:#D9B84E;
+  --err:#B3261E;
+  --pane:#13222D; --pane-ink:#DCE8EE; --pane-dim:#8197A5; --pane-line:#273C4D;
+  --serif:Charter,"Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0E151B; --surface:#16212A; --ink:#E6ECEF; --muted:#9BAAB6;
+    --line:#2A3844; --line-strong:#5F7381;
+    --accent:#4FD1B1; --accent-ink:#07261E; --accent-soft:#12342C;
+    --warn-bg:#3A2F10; --warn-ink:#F1DC9A; --warn-line:#7A6320;
+    --err:#FF8F86;
+    --pane:#0A1218; --pane-line:#24384A;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--sans)}
+a{color:var(--accent)}
+code{font-family:var(--mono);font-size:.9em;background:var(--accent-soft);padding:.05em .35em;border-radius:4px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.wrap{max-width:76rem;margin:0 auto;padding:clamp(1rem,3vw,2.25rem)}
+header.top{margin-bottom:1.75rem}
+h1{font:600 clamp(1.6rem,3.2vw,2.2rem)/1.2 var(--serif);letter-spacing:-.01em;margin:0 0 .5rem}
+.lede{max-width:60ch;color:var(--muted);margin:0 0 1rem}
+.trust{display:flex;flex-wrap:wrap;gap:.25rem .6rem;align-items:baseline;background:var(--accent-soft);
+  border:1px solid var(--line);border-radius:10px;padding:.7rem .95rem;max-width:48rem;margin:0}
+.linkbtn{font:inherit;background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;cursor:pointer}
+#netResult{flex-basis:100%;font-size:.92rem}
+
+.layout{display:grid;grid-template-columns:minmax(0,36rem) minmax(0,1fr);gap:2rem;align-items:start}
+@media (max-width:60rem){.layout{grid-template-columns:minmax(0,1fr)}}
+
+.progress{margin-bottom:.75rem}
+#pmeta{color:var(--muted);font-size:.92rem;margin:0 0 .4rem}
+.bar{height:4px;background:var(--line);border-radius:2px;overflow:hidden}
+#barfill{display:block;height:100%;width:0;background:var(--accent);transition:width .25s ease}
+@media (prefers-reduced-motion:reduce){#barfill{transition:none}}
+
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:clamp(1.1rem,3vw,1.6rem)}
+.sheet h2{font:600 1.45rem/1.25 var(--serif);margin:0 0 .6rem}
+.sheet h2:focus{outline:none}
+.sheet h3{font:600 1.1rem/1.3 var(--serif);margin:1.6rem 0 .5rem}
+.sheet p{margin:.4rem 0 .9rem}
+
+.field{margin:1.1rem 0}
+.field label,legend{font-weight:600;display:block}
+fieldset{border:0;padding:0;margin:1.1rem 0}
+legend{padding:0;margin-bottom:.15rem}
+.hint{color:var(--muted);font-size:.92rem;margin:.1rem 0 .45rem !important}
+input[type=text],input[type=password],select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line-strong);border-radius:6px;padding:.65rem .75rem;min-height:44px}
+textarea{font:.88rem/1.5 var(--mono);min-height:9rem;resize:vertical}
+input[aria-invalid=true]{border-color:var(--err)}
+.err{color:var(--err);font-size:.92rem;margin:.35rem 0 0 !important}
+.pwrow{display:flex;gap:.5rem}
+.pwrow input{flex:1}
+
+.opts{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fit,minmax(10.5rem,1fr));margin-top:.5rem}
+.opts.wide{grid-template-columns:1fr}
+.opt{position:relative;display:block;cursor:pointer}
+.opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.opt-body{display:block;height:100%;border:1px solid var(--line-strong);border-radius:6px;padding:.7rem .85rem}
+.opt-body strong{display:block}
+.opt-body .sub{display:block;color:var(--muted);font-size:.9rem}
+.opt input:checked + .opt-body{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.opt input:focus-visible + .opt-body{outline:3px solid var(--accent);outline-offset:2px}
+.opts.seg{grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));margin:.2rem 0 1rem}
+
+.checks{list-style:none;padding:0;margin:.8rem 0}
+.checks li{margin:.5rem 0}
+.checks label,.tick{display:flex;gap:.7rem;align-items:flex-start;cursor:pointer}
+.checks input,.tick input{width:1.15rem;height:1.15rem;margin:.22rem 0 0;accent-color:var(--accent);flex:none}
+
+.note{background:var(--accent-soft);border:1px solid var(--line);border-radius:6px;padding:.6rem .8rem;font-size:.95rem}
+.warn{background:var(--warn-bg);color:var(--warn-ink);border:1px solid var(--warn-line);border-radius:6px;padding:.75rem .9rem;margin:.8rem 0}
+.warn p{margin:.2rem 0 !important}
+
+details.group{border:1px solid var(--line);border-radius:8px;margin:.6rem 0;background:var(--surface)}
+details.group > summary{cursor:pointer;padding:.7rem .9rem;font-weight:600;display:flex;gap:.6rem;align-items:center;min-height:44px}
+details.group[open] > summary{border-bottom:1px solid var(--line)}
+details.group > .inner{padding:0 .9rem .5rem}
+.count{font-weight:500;font-size:.82rem;color:var(--accent-ink);background:var(--accent);border-radius:99px;padding:0 .5rem;min-width:1.4rem;text-align:center}
+.count[hidden]{display:none}
+.desc{color:var(--muted);font-size:.92rem;margin:.7rem 0 0 !important}
+
+.nav{display:flex;gap:.75rem;margin-top:1.1rem;flex-wrap:wrap}
+.btn{font:inherit;font-weight:600;min-height:44px;padding:0 1.15rem;border-radius:6px;cursor:pointer;border:1px solid var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-strong)}
+.btn.small{padding:0 .8rem;font-weight:500}
+.btn[hidden]{display:none}
+
+/* The live file pane */
+.file{background:var(--pane);color:var(--pane-ink);border:1px solid var(--pane-line);border-radius:10px;overflow:hidden}
+.side{position:sticky;top:1rem;display:grid;gap:1rem;max-height:calc(100vh - 2rem);overflow:auto;align-content:start}
+@media (max-width:60rem){.side{position:static;max-height:none;overflow:visible}}
+.fhead{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.6rem .8rem .6rem 1.1rem;border-bottom:1px solid var(--pane-line);flex-wrap:wrap}
+.tabs{display:flex;gap:.25rem}
+.tabs button{font:600 .9rem var(--mono);color:var(--pane-dim);background:transparent;border:0;border-radius:6px;min-height:40px;padding:0 .7rem;cursor:pointer}
+.tabs button[aria-pressed=true]{color:var(--pane-ink);background:var(--pane-line)}
+.fbtns{display:flex;gap:.4rem}
+.pbtn{font:inherit;font-size:.9rem;color:var(--pane-ink);background:transparent;border:1px solid #3F5668;border-radius:6px;min-height:40px;padding:0 .85rem;cursor:pointer}
+.pbtn:disabled{opacity:.45;cursor:not-allowed}
+.pbtn.go{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.pbtn.go:disabled{background:transparent;border-color:#3F5668;color:var(--pane-ink)}
+#preview{margin:0;padding:1rem 1.1rem;font:.88rem/1.7 var(--mono);overflow:auto;white-space:pre;min-height:8rem;max-height:60vh}
+#preview.empty{color:var(--pane-dim)}
+.fstat{padding:.65rem 1.1rem;border-top:1px solid var(--pane-line);color:var(--pane-dim);font-size:.9rem}
+.fstat .bad{color:#FFB4AB}
+.fstat .linkbtn{color:var(--pane-ink)}
+.fstat p{margin:.2rem 0}
+
+/* Result */
+dl#summary{display:grid;grid-template-columns:max-content 1fr;gap:.35rem 1.1rem;margin:.5rem 0 0}
+dl#summary dt{color:var(--muted)}
+dl#summary dd{margin:0;overflow-wrap:anywhere}
+dl#summary .sec{grid-column:1/-1;font-weight:600;margin-top:.7rem}
+.tag{color:var(--muted);font-size:.88rem}
+ol.instr{list-style:none;counter-reset:s;padding:0;margin:.5rem 0 0}
+ol.instr > li{counter-increment:s;position:relative;border-top:1px solid var(--line);padding:1rem 0 .6rem 2.7rem}
+ol.instr > li::before{content:counter(s);position:absolute;left:0;top:1rem;width:1.9rem;height:1.9rem;border-radius:50%;
+  border:1.5px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-weight:600;font-size:.92rem}
+ol.instr h4{margin:0;font-size:1.02rem}
+ol.instr p{margin:.25rem 0 0}
+.code{position:relative;margin:.5rem 0 .8rem}
+.code pre{margin:0;background:var(--pane);color:var(--pane-ink);border:1px solid var(--pane-line);border-radius:6px;
+  padding:.8rem 5.2rem .8rem 1rem;font:.86rem/1.6 var(--mono);overflow-x:auto}
+.code pre code{background:none;padding:0;border-radius:0;color:inherit;font-size:inherit}
+.code .pbtn{position:absolute;top:.4rem;right:.4rem;min-height:36px}
+footer{margin-top:2.2rem;color:var(--muted);font-size:.9rem;max-width:60ch}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <h1>Fleet server config helper</h1>
+  <p class="lede">Answer a few questions and get a ready-to-use Fleet server config as a <code>fleet.yml</code> file, environment variables or command-line flags.</p>
+  <p class="trust"><strong>Nothing you type leaves this page.</strong>
+    <span>There is no server behind it, and your browser is told to block every outgoing request.</span>
+    <button type="button" class="linkbtn" id="testNet">Test it</button>
+    <span id="netResult" role="status"></span></p>
+  <noscript><p class="warn">This page needs JavaScript to run in your browser. It still never sends anything anywhere.</p></noscript>
+</header>
+
+<div class="layout">
+<main>
+  <div class="progress">
+    <p id="pmeta"></p>
+    <div class="bar" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><span id="barfill"></span></div>
+  </div>
+
+  <div id="stepHost"></div>
+
+  <div class="nav" id="mainNav">
+    <button type="button" class="btn ghost" id="back" hidden>Back</button>
+    <button type="button" class="btn primary" id="next">Continue</button>
+  </div>
+</main>
+
+<div class="side">
+<aside class="file" aria-label="Config preview">
+  <div class="fhead">
+    <span class="tabs" role="group" aria-label="Output format">
+      <button type="button" data-tab="yaml" aria-pressed="true">fleet.yml</button>
+      <button type="button" data-tab="env" aria-pressed="false">Env vars</button>
+      <button type="button" data-tab="flags" aria-pressed="false">CLI flags</button>
+    </span>
+    <span class="fbtns">
+      <button type="button" class="pbtn" id="copyFile" disabled>Copy</button>
+      <button type="button" class="pbtn go" id="dlFile" disabled>Download</button>
+    </span>
+  </div>
+  <pre id="preview" tabindex="0" aria-label="Preview of the generated config"></pre>
+  <div class="fstat" id="fstat" aria-live="polite"></div>
+</aside>
+</div>
+</div>
+
+<footer>
+  <p>Field names follow Fleet's <code>config.go</code>. This is a personal project, not an officially supported Fleet tool. Deploying on Hetzner Cloud? Try the <a href="https://grayw.github.io/hetzner-fleet-opentofu/" target="_blank" rel="noopener noreferrer">Hetzner config helper</a>.</p>
+</footer>
+</div>
+
+<script>
+'use strict';
+const SCHEMA = /*__SCHEMA__*/null;
+
+/*__SRC__*/
+
+/* ---------- Page ---------- */
+const $ = (sel, root = document) => root.querySelector(sel);
+const h = (tag, attrs = {}, ...kids) => {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (v === false || v == null) continue;
+    if (k === 'class') el.className = v;
+    else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v === true ? '' : v);
+  }
+  for (const kid of kids.flat()) if (kid != null && kid !== false) el.append(kid.nodeType ? kid : document.createTextNode(kid));
+  return el;
+};
+
+const LAST = 5;
+const TITLES = ['Before you start', 'Database and Redis', 'Server', 'More options', 'Secrets', 'Your files and instructions'];
+const SECRETS = secretFields(SCHEMA);
+const skey = ({ section, field }) => `${section.key}.${field.key}`;
+const MASK = '••••••••';
+
+const fresh = () => ({
+  step: 0, values: {}, extra: '', checks: {},
+  secmode: 'omit', used: {}, secrets: {}, ack: false,
+  tab: 'yaml', shell: 'unix', importMsg: '', sharedMsg: '',
+});
+let S = fresh();
+
+const setValue = (sectionKey, fieldKey, v) => { (S.values[sectionKey] ??= {})[fieldKey] = v; };
+const getValue = (sectionKey, fieldKey) => S.values[sectionKey]?.[fieldKey] ?? '';
+
+/* Values handed to the builder: form values plus secrets, masked for the on-screen preview. */
+function inputs(mask) {
+  const v = structuredClone(S.values);
+  for (const s of SECRETS) {
+    const k = skey(s);
+    const typed = (S.secrets[k] ?? '').trim();
+    const has = S.secmode === 'omit' ? !!S.used[k] : typed !== '';
+    if (!has) continue;
+    (v[s.section.key] ??= {})[s.field.key] = S.secmode === 'omit' ? 'x' : (mask ? MASK : typed);
+  }
+  return v;
+}
+const compute = mask => build(SCHEMA, inputs(mask), S.extra, { secrets: S.secmode });
+const secretsTyped = () => S.secmode === 'include' && SECRETS.some(s => (S.secrets[skey(s)] ?? '').trim() !== '');
+
+/* ---------- Clipboard and download ---------- */
+function copyText(text, btn) {
+  const done = () => { const o = btn.dataset.label || btn.textContent; btn.dataset.label = o; btn.textContent = 'Copied'; setTimeout(() => { btn.textContent = o; }, 1500); };
+  const fallback = () => {
+    const ta = h('textarea', { readonly: true }); ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.append(ta); ta.select();
+    try { document.execCommand('copy'); } catch (_) {}
+    ta.remove(); done();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback);
+  else fallback();
+}
+function codeBlock(text) {
+  const btn = h('button', { type: 'button', class: 'pbtn' }, 'Copy');
+  btn.addEventListener('click', () => copyText(text, btn));
+  return h('div', { class: 'code' }, h('pre', {}, h('code', {}, text)), btn);
+}
+function download(name, text) {
+  const url = URL.createObjectURL(new Blob([text], { type: 'application/octet-stream' }));
+  const link = h('a', { href: url, download: name });
+  document.body.append(link); link.click(); link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+}
+const FILES = { yaml: 'fleet.yml', env: 'fleet.env', flags: 'fleet-flags.txt' };
+
+/* ---------- Fields ---------- */
+function fieldEl(section, field) {
+  const id = `f-${section.key}-${field.key}`;
+  const attrs = { id, 'data-section': section.key, 'data-field': field.key, 'aria-describedby': `h-${id} err-${id}` };
+  let input;
+  if (field.type === 'boolean') {
+    input = h('select', attrs, h('option', { value: '' }, `Default (${field.default})`), h('option', { value: 'true' }, 'true'), h('option', { value: 'false' }, 'false'));
+  } else if (field.type === 'select') {
+    input = h('select', attrs, h('option', { value: '' }, field.default ? `Default (${field.default})` : 'Default'), field.options.map(o => h('option', { value: o }, o)));
+  } else {
+    input = h('input', {
+      ...attrs, type: 'text', autocomplete: 'off', autocapitalize: 'none', spellcheck: 'false',
+      inputmode: field.type === 'integer' ? 'numeric' : false,
+      placeholder: field.default === '' ? '' : String(field.default),
+    });
+  }
+  input.value = getValue(section.key, field.key);
+  input.addEventListener('input', () => { setValue(section.key, field.key, input.value); refresh(); });
+  input.addEventListener('change', () => { setValue(section.key, field.key, input.value); refresh(); });
+  return h('div', { class: 'field' },
+    h('label', { for: id }, field.label),
+    h('p', { class: 'hint', id: `h-${id}` }, field.help),
+    input,
+    h('p', { class: 'err', id: `err-${id}`, 'data-err': `${section.key}.${field.key}`, 'aria-live': 'polite', hidden: true }));
+}
+const sectionFields = (key, fields) => { const s = SCHEMA.find(x => x.key === key); return fields.map(f => fieldEl(s, f)); };
+
+/* ---------- Steps ---------- */
+const BEFORE = [
+  'The Fleet server binary or container image.',
+  'A MySQL database, version 8.0 or newer, that Fleet can reach, and an empty database for it.',
+  'A Redis server that Fleet can reach.',
+  'A TLS certificate and key, or a proxy in front of Fleet that handles HTTPS.',
+];
+
+function stepBefore() {
+  const pre = h('details', { class: 'group', id: 'importBox' },
+    h('summary', {}, 'I already have a fleet.yml'),
+    h('div', { class: 'inner' },
+      h('p', { class: 'hint' }, 'Paste it here to edit it with the form. This replaces anything you have entered so far. Secrets in it are not loaded.'),
+      h('label', { class: 'sr', for: 'importText' }, 'Existing fleet.yml'),
+      h('textarea', { id: 'importText', spellcheck: 'false', autocomplete: 'off', placeholder: 'mysql:\n  address: db.internal:3306' }),
+      h('div', { class: 'nav' }, h('button', { type: 'button', class: 'btn ghost small', id: 'importGo' }, 'Load it')),
+      h('p', { class: 'note', id: 'importMsg', role: 'status', hidden: !S.importMsg }, S.importMsg)));
+  $('#importGo', pre).addEventListener('click', () => {
+    const text = $('#importText', pre).value;
+    if (text.trim() === '') return;
+    const r = importYaml(SCHEMA, text);
+    S.values = {}; S.used = {}; S.secrets = {};
+    let secretCount = 0;
+    for (const [sk, fields] of Object.entries(r.values)) {
+      const section = SCHEMA.find(s => s.key === sk);
+      for (const [fk, v] of Object.entries(fields)) {
+        if (section.fields.find(f => f.key === fk).type === 'password') {
+          if (v !== '') { S.used[`${sk}.${fk}`] = true; secretCount++; }
+        } else if (v !== '') setValue(sk, fk, v);
+      }
+    }
+    S.extra = r.extra;
+    S.secmode = 'omit';
+    const bits = [`Loaded ${Object.values(S.values).reduce((n, f) => n + Object.keys(f).length, 0)} settings.`];
+    if (r.kept.length) bits.push(`Kept as-is under Advanced because they can't be shown as form fields: ${r.kept.join(', ')}.`);
+    if (secretCount) bits.push(`${secretCount} secret${secretCount === 1 ? ' was' : 's were'} not loaded. They're ticked on the Secrets step so you can supply them safely.`);
+    S.importMsg = bits.join(' ');
+    const m = $('#importMsg', pre); m.textContent = S.importMsg; m.hidden = false;
+    refresh();
+  });
+  return h('section', { class: 'sheet' },
+    h('h2', { tabindex: '-1' }, TITLES[0]),
+    h('p', {}, 'You need these ready. Tick each one when you have it.'),
+    h('ul', { class: 'checks' }, BEFORE.map((text, i) =>
+      h('li', {}, h('label', {}, (() => {
+        const cb = h('input', { type: 'checkbox' }); cb.checked = !!S.checks[i];
+        cb.addEventListener('change', () => { S.checks[i] = cb.checked; });
+        return cb;
+      })(), h('span', {}, text))))),
+    h('p', { class: 'note' }, 'You can keep going without them. You only need them when you run Fleet.'),
+    S.sharedMsg && h('p', { class: 'note', role: 'status' }, S.sharedMsg),
+    pre);
+}
+
+const stepEssentials = (title, intro, sectionKeys) => () => h('section', { class: 'sheet' },
+  h('h2', { tabindex: '-1' }, title),
+  h('p', {}, intro),
+  sectionKeys.map(k => h('div', {},
+    sectionKeys.length > 1 && h('h3', {}, SCHEMA.find(s => s.key === k).title),
+    sectionKeys.length > 1 && h('p', { class: 'hint' }, SCHEMA.find(s => s.key === k).description),
+    sectionFields(k, essentialFields(SCHEMA, k)))));
+
+function setCount(sectionKey) {
+  const section = SCHEMA.find(s => s.key === sectionKey);
+  return section.fields.filter(f => f.type !== 'password' && getValue(sectionKey, f.key).trim() !== '').length;
+}
+
+function stepMore() {
+  const groups = SCHEMA.flatMap(section => {
+    const essentialKeys = new Set((ESSENTIALS[section.key] ?? []));
+    const fields = section.fields.filter(f => f.type !== 'password' && !essentialKeys.has(f.key));
+    if (fields.length === 0) return [];
+    return [h('details', { class: 'group', 'data-group': section.key, open: setCount(section.key) > 0 },
+      h('summary', {}, section.title, h('span', { class: 'count', 'data-count': section.key, hidden: true })),
+      h('div', { class: 'inner' }, h('p', { class: 'desc' }, section.description), sectionFields(section.key, fields)))];
+  });
+  const ta = h('textarea', { id: 'extra', spellcheck: 'false', autocomplete: 'off', placeholder: 'filesystem:\n  status_log_file: /var/log/fleet/status.log' });
+  ta.value = S.extra;
+  ta.addEventListener('input', () => { S.extra = ta.value; refresh(); });
+  return h('section', { class: 'sheet' },
+    h('h2', { tabindex: '-1' }, TITLES[3]),
+    h('p', {}, 'Everything here is optional. Anything you leave blank is left out, so Fleet uses its own default.'),
+    groups,
+    h('details', { class: 'group', open: S.extra.trim() !== '' },
+      h('summary', {}, 'Advanced: raw YAML'),
+      h('div', { class: 'inner' },
+        h('p', { class: 'desc' }, 'Anything typed here is added to the end of fleet.yml as-is. It is not checked or merged with the fields above. Use it for options this form does not cover. It is left out of share links.'),
+        h('label', { class: 'sr', for: 'extra' }, 'Raw YAML'), ta)));
+}
+
+function stepSecrets() {
+  const modeOpt = (value, title, sub) => {
+    const r = h('input', { type: 'radio', name: 'secmode', value });
+    r.checked = S.secmode === value;
+    r.addEventListener('change', () => {
+      if (!r.checked) return;
+      if (value === 'omit') { for (const s of SECRETS) if ((S.secrets[skey(s)] ?? '').trim() !== '') S.used[skey(s)] = true; S.secrets = {}; S.ack = false; }
+      S.secmode = value; go(S.step);
+    });
+    return h('label', { class: 'opt' }, r, h('span', { class: 'opt-body' }, h('strong', {}, title), h('span', { class: 'sub' }, sub)));
+  };
+  const rows = SECRETS.map(s => {
+    const k = skey(s);
+    const id = `s-${k.replace('.', '-')}`;
+    const label = `${s.section.title}: ${s.field.label}`;
+    if (S.secmode === 'omit') {
+      const cb = h('input', { type: 'checkbox', id }); cb.checked = !!S.used[k];
+      cb.addEventListener('change', () => { S.used[k] = cb.checked; refresh(); });
+      return h('li', {}, h('label', { for: id }, cb, h('span', {}, h('strong', {}, label), ' ', h('code', {}, envVarName(s.section, s.field)), h('br'), h('span', { class: 'tag' }, s.field.help))));
+    }
+    const input = h('input', { id, type: 'password', autocomplete: 'off', autocapitalize: 'none', spellcheck: 'false' });
+    input.value = S.secrets[k] ?? '';
+    input.addEventListener('input', () => { S.secrets[k] = input.value; refresh(); });
+    const toggle = h('button', { type: 'button', class: 'btn ghost small' }, 'Show');
+    toggle.addEventListener('click', () => { const show = input.type === 'password'; input.type = show ? 'text' : 'password'; toggle.textContent = show ? 'Hide' : 'Show'; });
+    return h('div', { class: 'field' }, h('label', { for: id }, label), h('p', { class: 'hint' }, s.field.help), h('div', { class: 'pwrow' }, input, toggle));
+  });
+  const ack = h('input', { type: 'checkbox', id: 'ack' }); ack.checked = S.ack;
+  ack.addEventListener('change', () => { S.ack = ack.checked; refresh(); });
+  return h('section', { class: 'sheet' },
+    h('h2', { tabindex: '-1' }, TITLES[4]),
+    h('p', {}, 'Passwords and keys are the one part of a config you should not leave lying around. The safest approach keeps them out of every file and out of this page.'),
+    h('fieldset', {}, h('legend', { class: 'sr' }, 'How to handle secrets'),
+      h('div', { class: 'opts wide' },
+        modeOpt('omit', 'Keep secrets out of the file', 'Recommended. You supply them as environment variables, which Fleet reads on top of the file.'),
+        modeOpt('include', 'Put secrets in the file', 'Simpler, but the file then holds live credentials.'))),
+    S.secmode === 'omit'
+      ? h('div', {}, h('p', { class: 'hint' }, 'Tick the ones you use. The last step shows how to set them.'), h('ul', { class: 'checks' }, rows))
+      : h('div', {},
+          h('div', { class: 'warn', role: 'note' },
+            h('p', {}, h('strong', {}, 'Treat the finished config like a password.')),
+            h('p', {}, 'Anyone who gets it can use these credentials. Don’t commit it, email it, or paste it into a chat. What you type below stays in this browser tab and goes into the output only when you copy or download it. The preview hides it.')),
+          rows,
+          h('label', { class: 'tick' }, ack, h('span', {}, 'I understand the output will contain secrets and I’ll keep it private.'))));
+}
+
+function stepResult() {
+  const res = compute(true);
+  const rows = summarize(SCHEMA, S.values);
+  const dl = h('dl', { id: 'summary' });
+  let last = null;
+  for (const r of rows) {
+    if (r.sectionTitle !== last) { dl.append(h('dt', { class: 'sec' }, r.sectionTitle)); last = r.sectionTitle; }
+    dl.append(h('dt', {}, r.label), h('dd', {}, h('code', {}, r.value), r.isDefault ? h('span', { class: 'tag' }, ' (same as Fleet’s default)') : null));
+  }
+  const secretRows = SECRETS.filter(s => S.secmode === 'omit' ? S.used[skey(s)] : (S.secrets[skey(s)] ?? '').trim() !== '');
+  if (secretRows.length) {
+    dl.append(h('dt', { class: 'sec' }, 'Secrets'));
+    for (const s of secretRows) dl.append(h('dt', {}, `${s.section.title}: ${s.field.label}`), h('dd', {}, S.secmode === 'omit' ? ['from ', h('code', {}, envVarName(s.section, s.field))] : 'in the output (hidden here)'));
+  }
+  if (S.extra.trim()) dl.append(h('dt', { class: 'sec' }, 'Advanced'), h('dt', {}, 'Raw YAML'), h('dd', {}, `${S.extra.trim().split('\n').length} lines, appended as-is`));
+  const empty = !rows.length && !secretRows.length && !S.extra.trim();
+
+  const shellOpt = (value, title, sub) => {
+    const r = h('input', { type: 'radio', name: 'shell', value }); r.checked = S.shell === value;
+    r.addEventListener('change', () => { if (r.checked) { S.shell = value; go(S.step); } });
+    return h('label', { class: 'opt' }, r, h('span', { class: 'opt-body' }, h('strong', {}, title), h('span', { class: 'sub' }, sub)));
+  };
+  const instr = h('ol', { class: 'instr' });
+  const add = (title, note, code) => instr.append(h('li', {}, h('h4', {}, title), note && h('p', {}, note), code && codeBlock(code)));
+  if (res.yaml) add('Save the config', 'Copy or download fleet.yml from the panel next to this (below it on a phone) and put it in the folder you’ll run Fleet from. If your browser added .txt to the end of the name, remove it.');
+  for (const s of usageSteps(S.shell, { omitted: res.omitted, hasYaml: !!res.yaml, hasEnv: !!res.env })) add(s.title, s.note, s.code);
+  add('Prefer not to use a file?', 'Switch the panel to Env vars or CLI flags. Fleet reads those the same way, and environment variables win over the file.');
+
+  return h('section', { class: 'sheet' },
+    h('h2', { tabindex: '-1' }, TITLES[5]),
+    h('h3', {}, 'What you chose'),
+    empty ? h('p', { class: 'hint' }, 'Nothing yet. Go back and fill in a field or two.') : dl,
+    h('h3', {}, 'Instructions'),
+    h('fieldset', {}, h('legend', {}, 'Which terminal do you use?'),
+      h('div', { class: 'opts seg' }, shellOpt('unix', 'macOS or Linux', 'Terminal (zsh or bash)'), shellOpt('windows', 'Windows', 'PowerShell 7 or newer'))),
+    instr,
+    h('div', { class: 'nav' }, h('button', { type: 'button', class: 'btn ghost', id: 'startOver' }, 'Start over and clear everything')));
+}
+
+const STEPS = [
+  stepBefore,
+  stepEssentials(TITLES[1], 'Fleet stores its data in MySQL and uses Redis for caching and live queries. Fields you leave blank use Fleet’s defaults, shown in grey.', ['mysql', 'redis']),
+  stepEssentials(TITLES[2], 'Where Fleet listens and how it handles HTTPS.', ['server']),
+  stepMore,
+  stepSecrets,
+  stepResult,
+];
+
+/* ---------- Render loop ---------- */
+function go(n) {
+  S.step = Math.max(0, Math.min(LAST, n));
+  const host = $('#stepHost'); host.replaceChildren(STEPS[S.step]());
+  $('#pmeta').textContent = `Step ${S.step + 1} of ${LAST + 1}: ${TITLES[S.step]}`;
+  const bar = $('.bar'); bar.setAttribute('aria-valuenow', S.step); $('#barfill').style.width = `${(S.step / LAST) * 100}%`;
+  $('#back').hidden = S.step === 0; $('#next').hidden = S.step === LAST;
+  const hd = $('h2', host); if (hd) hd.focus({ preventScroll: true });
+  window.scrollTo({ top: 0 });
+  refresh();
+}
+
+function refresh() {
+  const res = compute(true);
+  const real = compute(false);
+  const text = res[S.tab];
+  const pre = $('#preview');
+  pre.textContent = text || '# Your settings appear here as you fill them in.';
+  pre.classList.toggle('empty', !text);
+  for (const b of document.querySelectorAll('[data-tab]')) b.setAttribute('aria-pressed', String(b.dataset.tab === S.tab));
+
+  const errs = new Map(res.errors.map(e => [`${e.section}.${e.field}`, e.message]));
+  for (const el of document.querySelectorAll('[data-err]')) {
+    const m = errs.get(el.dataset.err); el.textContent = m ?? ''; el.hidden = !m;
+    const input = document.getElementById(el.id.replace(/^err-/, '')); if (input) input.setAttribute('aria-invalid', String(!!m));
+  }
+  for (const el of document.querySelectorAll('[data-count]')) {
+    const n = setCount(el.dataset.count); el.textContent = n; el.hidden = n === 0;
+  }
+
+  const needAck = secretsTyped() && !S.ack;
+  const ready = res.errors.length === 0 && !!(real.yaml || real.env) && !needAck;
+  $('#copyFile').disabled = !ready; $('#dlFile').disabled = !ready;
+  const stat = $('#fstat'); stat.replaceChildren();
+  if (res.errors.length) stat.append(h('p', { class: 'bad' }, `${res.errors.length} field${res.errors.length === 1 ? ' needs' : 's need'} fixing: ${res.errors.map(e => e.label).join(', ')}.`));
+  else if (needAck) stat.append(h('p', {}, 'Tick the box on the Secrets step to copy or download output that contains secrets.'));
+  else if (!(real.yaml || real.env)) stat.append(h('p', {}, 'Nothing to copy yet.'));
+  else stat.append(h('p', {}, S.secmode === 'include' && secretsTyped() ? 'Ready. Secrets are hidden in this preview but included when you copy or download.' : 'Ready. Copy or download your config.'));
+  if (res.omitted.length) stat.append(h('p', {}, `Left out on purpose: ${res.omitted.map(o => o.env).join(', ')}. Set them in your environment.`));
+  const share = encodeShare(SCHEMA, S.values);
+  if (share) {
+    const b = h('button', { type: 'button', class: 'linkbtn' }, 'Copy a share link');
+    b.addEventListener('click', () => copyText(`${location.href.split('#')[0]}#${share}`, b));
+    stat.append(h('p', {}, b, ' (your settings except secrets and raw YAML; it carries them in the link itself, so nothing is uploaded)'));
+  }
+}
+
+/* ---------- Events ---------- */
+$('#next').addEventListener('click', () => go(S.step + 1));
+$('#back').addEventListener('click', () => go(S.step - 1));
+for (const b of document.querySelectorAll('[data-tab]')) b.addEventListener('click', () => { S.tab = b.dataset.tab; refresh(); });
+$('#copyFile').addEventListener('click', () => { const r = compute(false); copyText(r[S.tab], $('#copyFile')); });
+$('#dlFile').addEventListener('click', () => { const r = compute(false); download(FILES[S.tab], r[S.tab] + (r[S.tab].endsWith('\n') ? '' : '\n')); });
+document.addEventListener('click', e => {
+  if (e.target.id === 'startOver') { S = fresh(); history.replaceState(null, '', location.pathname + location.search); go(0); }
+});
+
+/* Network self-test: try to reach out, and report whether the browser blocked it. */
+$('#testNet').addEventListener('click', () => {
+  const out = $('#netResult'); out.textContent = 'Testing…';
+  let violated = false;
+  const onV = () => { violated = true; };
+  document.addEventListener('securitypolicyviolation', onV, { once: true });
+  const report = () => setTimeout(() => {
+    document.removeEventListener('securitypolicyviolation', onV);
+    out.textContent = violated
+      ? 'Blocked: your browser’s security policy stopped the request, so this page can’t send data out.'
+      : 'The request failed, but the browser didn’t confirm it was blocked by policy. You may be offline or an extension interfered. Check the Network tab in your browser’s developer tools to be sure.';
+  }, 150);
+  try { fetch('https://self-test.invalid/ping', { mode: 'no-cors' }).then(() => { out.textContent = 'Warning: the request was NOT blocked. Don’t enter anything sensitive.'; }, report); }
+  catch (_) { report(); }
+});
+window.addEventListener('beforeunload', e => {
+  if (S.step < LAST && (Object.keys(S.values).length || S.extra || Object.values(S.secrets).some(Boolean))) { e.preventDefault(); e.returnValue = ''; }
+});
+
+/* ---------- Init ---------- */
+{
+  const shared = decodeShare(SCHEMA, location.hash);
+  const n = Object.values(shared.values).reduce((c, f) => c + Object.keys(f).length, 0);
+  if (n) { S.values = shared.values; S.sharedMsg = `Loaded ${n} setting${n === 1 ? '' : 's'} from a share link. Secrets are never part of one.`; }
+}
+go(0);
+</script>
+</body>
+</html>

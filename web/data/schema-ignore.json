@@ -1,0 +1,19 @@
+{
+  "_comment": "Fields that exist in Fleet's config.go but are deliberately not in schema.json. Keep a reason next to each.",
+  "server": [
+    "sandbox_enabled",
+    "endpointrequestsizeoverrides"
+  ],
+  "osquery": [
+    "status_log_file",
+    "result_log_file",
+    "enable_log_rotation"
+  ],
+  "_reasons": {
+    "server.sandbox_enabled": "Hidden in Fleet (man.hideConfig); Fleet Sandbox no longer exists.",
+    "osquery.status_log_file": "Deprecated; replaced by filesystem.status_log_file.",
+    "osquery.result_log_file": "Deprecated; replaced by filesystem.result_log_file.",
+    "osquery.enable_log_rotation": "Deprecated; replaced by filesystem.enable_log_rotation.",
+    "server.endpointrequestsizeoverrides": "Map-valued (endpoint path to max body size); can't be a form field. Use the Advanced box. (Go has no yaml tag, so the parser sees the lower-cased name.)"
+  }
+}

@@ -1,0 +1,1560 @@
+[
+  {
+    "expected": {
+      "env": "FLEET_MYSQL_PROTOCOL=plain\nFLEET_MYSQL_ADDRESS=with space\nFLEET_MYSQL_USERNAME=yes\nFLEET_MYSQL_PASSWORD=s3cret: #pass\nFLEET_MYSQL_PASSWORD_PATH=a: b\nFLEET_MYSQL_DATABASE=-dash\nFLEET_MYSQL_TLS_CERT=x #y\nFLEET_MYSQL_TLS_KEY=plain\nFLEET_MYSQL_TLS_CA=with space\nFLEET_MYSQL_TLS_SERVER_NAME=yes\nFLEET_MYSQL_TLS_CONFIG=123\nFLEET_MYSQL_MAX_OPEN_CONNS=-7\nFLEET_MYSQL_MAX_IDLE_CONNS=42\nFLEET_MYSQL_CONN_MAX_LIFETIME=-7\nFLEET_MYSQL_SQL_MODE=plain\nFLEET_MYSQL_REGION=with space\nFLEET_MYSQL_STS_ASSUME_ROLE_ARN=yes\nFLEET_MYSQL_STS_EXTERNAL_ID=123",
+      "errors": [],
+      "flags": "--mysql_protocol=plain\n--mysql_address=with space\n--mysql_username=yes\n--mysql_password=s3cret: #pass\n--mysql_password_path=a: b\n--mysql_database=-dash\n--mysql_tls_cert=x #y\n--mysql_tls_key=plain\n--mysql_tls_ca=with space\n--mysql_tls_server_name=yes\n--mysql_tls_config=123\n--mysql_max_open_conns=-7\n--mysql_max_idle_conns=42\n--mysql_conn_max_lifetime=-7\n--mysql_sql_mode=plain\n--mysql_region=with space\n--mysql_sts_assume_role_arn=yes\n--mysql_sts_external_id=123",
+      "yaml": "mysql:\n  protocol: plain\n  address: with space\n  username: \"yes\"\n  password: \"s3cret: #pass\"\n  password_path: \"a: b\"\n  database: \"-dash\"\n  tls_cert: \"x #y\"\n  tls_key: plain\n  tls_ca: with space\n  tls_server_name: \"yes\"\n  tls_config: \"123\"\n  max_open_conns: -7\n  max_idle_conns: 42\n  conn_max_lifetime: -7\n  sql_mode: plain\n  region: with space\n  sts_assume_role_arn: \"yes\"\n  sts_external_id: \"123\"\n"
+    },
+    "extra_yaml": "",
+    "name": "mysql: all fields filled",
+    "values": {
+      "mysql": {
+        "address": "with space",
+        "conn_max_lifetime": "-7",
+        "database": "-dash",
+        "max_idle_conns": "42",
+        "max_open_conns": "-7",
+        "password": "s3cret: #pass",
+        "password_path": "a: b",
+        "protocol": "plain",
+        "region": "with space",
+        "sql_mode": "plain",
+        "sts_assume_role_arn": "yes",
+        "sts_external_id": "123",
+        "tls_ca": "with space",
+        "tls_cert": "x #y",
+        "tls_config": "123",
+        "tls_key": "plain",
+        "tls_server_name": "yes",
+        "username": "yes"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_MYSQL_PROTOCOL=ok\nFLEET_MYSQL_ADDRESS=ok\nFLEET_MYSQL_USERNAME=ok\nFLEET_MYSQL_PASSWORD=ok\nFLEET_MYSQL_PASSWORD_PATH=ok\nFLEET_MYSQL_DATABASE=ok\nFLEET_MYSQL_TLS_CERT=ok\nFLEET_MYSQL_TLS_KEY=ok\nFLEET_MYSQL_TLS_CA=ok\nFLEET_MYSQL_TLS_SERVER_NAME=ok\nFLEET_MYSQL_TLS_CONFIG=ok\nFLEET_MYSQL_SQL_MODE=ok\nFLEET_MYSQL_REGION=ok\nFLEET_MYSQL_STS_ASSUME_ROLE_ARN=ok\nFLEET_MYSQL_STS_EXTERNAL_ID=ok",
+      "errors": [
+        {
+          "field": "max_open_conns",
+          "label": "Max open connections",
+          "message": "Max open connections must be a whole number",
+          "section": "mysql"
+        },
+        {
+          "field": "max_idle_conns",
+          "label": "Max idle connections",
+          "message": "Max idle connections must be a whole number",
+          "section": "mysql"
+        },
+        {
+          "field": "conn_max_lifetime",
+          "label": "Connection max lifetime (seconds)",
+          "message": "Connection max lifetime (seconds) must be a whole number",
+          "section": "mysql"
+        }
+      ],
+      "flags": "--mysql_protocol=ok\n--mysql_address=ok\n--mysql_username=ok\n--mysql_password=ok\n--mysql_password_path=ok\n--mysql_database=ok\n--mysql_tls_cert=ok\n--mysql_tls_key=ok\n--mysql_tls_ca=ok\n--mysql_tls_server_name=ok\n--mysql_tls_config=ok\n--mysql_sql_mode=ok\n--mysql_region=ok\n--mysql_sts_assume_role_arn=ok\n--mysql_sts_external_id=ok",
+      "yaml": "mysql:\n  protocol: ok\n  address: ok\n  username: ok\n  password: ok\n  password_path: ok\n  database: ok\n  tls_cert: ok\n  tls_key: ok\n  tls_ca: ok\n  tls_server_name: ok\n  tls_config: ok\n  sql_mode: ok\n  region: ok\n  sts_assume_role_arn: ok\n  sts_external_id: ok\n"
+    },
+    "extra_yaml": "",
+    "name": "mysql: all fields invalid",
+    "values": {
+      "mysql": {
+        "address": "ok",
+        "conn_max_lifetime": "4x",
+        "database": "ok",
+        "max_idle_conns": "4x",
+        "max_open_conns": "4x",
+        "password": "ok",
+        "password_path": "ok",
+        "protocol": "ok",
+        "region": "ok",
+        "sql_mode": "ok",
+        "sts_assume_role_arn": "ok",
+        "sts_external_id": "ok",
+        "tls_ca": "ok",
+        "tls_cert": "ok",
+        "tls_config": "ok",
+        "tls_key": "ok",
+        "tls_server_name": "ok",
+        "username": "ok"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "",
+      "errors": [],
+      "flags": "",
+      "yaml": ""
+    },
+    "extra_yaml": "",
+    "name": "mysql: whitespace is trimmed",
+    "values": {
+      "mysql": {
+        "address": "  ",
+        "conn_max_lifetime": "  ",
+        "database": "  ",
+        "max_idle_conns": "  ",
+        "max_open_conns": "  ",
+        "password": "  ",
+        "password_path": "  ",
+        "protocol": "  ",
+        "region": "  ",
+        "sql_mode": "  ",
+        "sts_assume_role_arn": "  ",
+        "sts_external_id": "  ",
+        "tls_ca": "  ",
+        "tls_cert": "  ",
+        "tls_config": "  ",
+        "tls_key": "  ",
+        "tls_server_name": "  ",
+        "username": "  "
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_MYSQL_READ_REPLICA_PROTOCOL=plain\nFLEET_MYSQL_READ_REPLICA_ADDRESS=with space\nFLEET_MYSQL_READ_REPLICA_USERNAME=yes\nFLEET_MYSQL_READ_REPLICA_PASSWORD=s3cret: #pass\nFLEET_MYSQL_READ_REPLICA_PASSWORD_PATH=a: b\nFLEET_MYSQL_READ_REPLICA_DATABASE=-dash\nFLEET_MYSQL_READ_REPLICA_TLS_CERT=x #y\nFLEET_MYSQL_READ_REPLICA_TLS_KEY=plain\nFLEET_MYSQL_READ_REPLICA_TLS_CA=with space\nFLEET_MYSQL_READ_REPLICA_TLS_SERVER_NAME=yes\nFLEET_MYSQL_READ_REPLICA_TLS_CONFIG=123\nFLEET_MYSQL_READ_REPLICA_MAX_OPEN_CONNS=-7\nFLEET_MYSQL_READ_REPLICA_MAX_IDLE_CONNS=42\nFLEET_MYSQL_READ_REPLICA_CONN_MAX_LIFETIME=-7\nFLEET_MYSQL_READ_REPLICA_SQL_MODE=plain\nFLEET_MYSQL_READ_REPLICA_REGION=with space\nFLEET_MYSQL_READ_REPLICA_STS_ASSUME_ROLE_ARN=yes\nFLEET_MYSQL_READ_REPLICA_STS_EXTERNAL_ID=123",
+      "errors": [],
+      "flags": "--mysql_read_replica_protocol=plain\n--mysql_read_replica_address=with space\n--mysql_read_replica_username=yes\n--mysql_read_replica_password=s3cret: #pass\n--mysql_read_replica_password_path=a: b\n--mysql_read_replica_database=-dash\n--mysql_read_replica_tls_cert=x #y\n--mysql_read_replica_tls_key=plain\n--mysql_read_replica_tls_ca=with space\n--mysql_read_replica_tls_server_name=yes\n--mysql_read_replica_tls_config=123\n--mysql_read_replica_max_open_conns=-7\n--mysql_read_replica_max_idle_conns=42\n--mysql_read_replica_conn_max_lifetime=-7\n--mysql_read_replica_sql_mode=plain\n--mysql_read_replica_region=with space\n--mysql_read_replica_sts_assume_role_arn=yes\n--mysql_read_replica_sts_external_id=123",
+      "yaml": "mysql_read_replica:\n  protocol: plain\n  address: with space\n  username: \"yes\"\n  password: \"s3cret: #pass\"\n  password_path: \"a: b\"\n  database: \"-dash\"\n  tls_cert: \"x #y\"\n  tls_key: plain\n  tls_ca: with space\n  tls_server_name: \"yes\"\n  tls_config: \"123\"\n  max_open_conns: -7\n  max_idle_conns: 42\n  conn_max_lifetime: -7\n  sql_mode: plain\n  region: with space\n  sts_assume_role_arn: \"yes\"\n  sts_external_id: \"123\"\n"
+    },
+    "extra_yaml": "",
+    "name": "mysql_read_replica: all fields filled",
+    "values": {
+      "mysql_read_replica": {
+        "address": "with space",
+        "conn_max_lifetime": "-7",
+        "database": "-dash",
+        "max_idle_conns": "42",
+        "max_open_conns": "-7",
+        "password": "s3cret: #pass",
+        "password_path": "a: b",
+        "protocol": "plain",
+        "region": "with space",
+        "sql_mode": "plain",
+        "sts_assume_role_arn": "yes",
+        "sts_external_id": "123",
+        "tls_ca": "with space",
+        "tls_cert": "x #y",
+        "tls_config": "123",
+        "tls_key": "plain",
+        "tls_server_name": "yes",
+        "username": "yes"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_MYSQL_READ_REPLICA_PROTOCOL=ok\nFLEET_MYSQL_READ_REPLICA_ADDRESS=ok\nFLEET_MYSQL_READ_REPLICA_USERNAME=ok\nFLEET_MYSQL_READ_REPLICA_PASSWORD=ok\nFLEET_MYSQL_READ_REPLICA_PASSWORD_PATH=ok\nFLEET_MYSQL_READ_REPLICA_DATABASE=ok\nFLEET_MYSQL_READ_REPLICA_TLS_CERT=ok\nFLEET_MYSQL_READ_REPLICA_TLS_KEY=ok\nFLEET_MYSQL_READ_REPLICA_TLS_CA=ok\nFLEET_MYSQL_READ_REPLICA_TLS_SERVER_NAME=ok\nFLEET_MYSQL_READ_REPLICA_TLS_CONFIG=ok\nFLEET_MYSQL_READ_REPLICA_SQL_MODE=ok\nFLEET_MYSQL_READ_REPLICA_REGION=ok\nFLEET_MYSQL_READ_REPLICA_STS_ASSUME_ROLE_ARN=ok\nFLEET_MYSQL_READ_REPLICA_STS_EXTERNAL_ID=ok",
+      "errors": [
+        {
+          "field": "max_open_conns",
+          "label": "Max open connections",
+          "message": "Max open connections must be a whole number",
+          "section": "mysql_read_replica"
+        },
+        {
+          "field": "max_idle_conns",
+          "label": "Max idle connections",
+          "message": "Max idle connections must be a whole number",
+          "section": "mysql_read_replica"
+        },
+        {
+          "field": "conn_max_lifetime",
+          "label": "Connection max lifetime (seconds)",
+          "message": "Connection max lifetime (seconds) must be a whole number",
+          "section": "mysql_read_replica"
+        }
+      ],
+      "flags": "--mysql_read_replica_protocol=ok\n--mysql_read_replica_address=ok\n--mysql_read_replica_username=ok\n--mysql_read_replica_password=ok\n--mysql_read_replica_password_path=ok\n--mysql_read_replica_database=ok\n--mysql_read_replica_tls_cert=ok\n--mysql_read_replica_tls_key=ok\n--mysql_read_replica_tls_ca=ok\n--mysql_read_replica_tls_server_name=ok\n--mysql_read_replica_tls_config=ok\n--mysql_read_replica_sql_mode=ok\n--mysql_read_replica_region=ok\n--mysql_read_replica_sts_assume_role_arn=ok\n--mysql_read_replica_sts_external_id=ok",
+      "yaml": "mysql_read_replica:\n  protocol: ok\n  address: ok\n  username: ok\n  password: ok\n  password_path: ok\n  database: ok\n  tls_cert: ok\n  tls_key: ok\n  tls_ca: ok\n  tls_server_name: ok\n  tls_config: ok\n  sql_mode: ok\n  region: ok\n  sts_assume_role_arn: ok\n  sts_external_id: ok\n"
+    },
+    "extra_yaml": "",
+    "name": "mysql_read_replica: all fields invalid",
+    "values": {
+      "mysql_read_replica": {
+        "address": "ok",
+        "conn_max_lifetime": "4x",
+        "database": "ok",
+        "max_idle_conns": "4x",
+        "max_open_conns": "4x",
+        "password": "ok",
+        "password_path": "ok",
+        "protocol": "ok",
+        "region": "ok",
+        "sql_mode": "ok",
+        "sts_assume_role_arn": "ok",
+        "sts_external_id": "ok",
+        "tls_ca": "ok",
+        "tls_cert": "ok",
+        "tls_config": "ok",
+        "tls_key": "ok",
+        "tls_server_name": "ok",
+        "username": "ok"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "",
+      "errors": [],
+      "flags": "",
+      "yaml": ""
+    },
+    "extra_yaml": "",
+    "name": "mysql_read_replica: whitespace is trimmed",
+    "values": {
+      "mysql_read_replica": {
+        "address": "  ",
+        "conn_max_lifetime": "  ",
+        "database": "  ",
+        "max_idle_conns": "  ",
+        "max_open_conns": "  ",
+        "password": "  ",
+        "password_path": "  ",
+        "protocol": "  ",
+        "region": "  ",
+        "sql_mode": "  ",
+        "sts_assume_role_arn": "  ",
+        "sts_external_id": "  ",
+        "tls_ca": "  ",
+        "tls_cert": "  ",
+        "tls_config": "  ",
+        "tls_key": "  ",
+        "tls_server_name": "  ",
+        "username": "  "
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_REDIS_ADDRESS=plain\nFLEET_REDIS_USERNAME=with space\nFLEET_REDIS_PASSWORD=s3cret: #pass\nFLEET_REDIS_DATABASE=-7\nFLEET_REDIS_USE_TLS=true\nFLEET_REDIS_REGION=-dash\nFLEET_REDIS_CACHE_NAME=x #y\nFLEET_REDIS_STS_ASSUME_ROLE_ARN=plain\nFLEET_REDIS_STS_EXTERNAL_ID=with space\nFLEET_REDIS_DUPLICATE_RESULTS=false\nFLEET_REDIS_CONNECT_TIMEOUT=0\nFLEET_REDIS_KEEP_ALIVE=500ms\nFLEET_REDIS_CONNECT_RETRY_ATTEMPTS=42\nFLEET_REDIS_CLUSTER_FOLLOW_REDIRECTIONS=false\nFLEET_REDIS_CLUSTER_READ_FROM_REPLICA=true\nFLEET_REDIS_TLS_CERT=with space\nFLEET_REDIS_TLS_KEY=yes\nFLEET_REDIS_TLS_CA=123\nFLEET_REDIS_TLS_SERVER_NAME=a: b\nFLEET_REDIS_TLS_HANDSHAKE_TIMEOUT=500ms\nFLEET_REDIS_MAX_IDLE_CONNS=42\nFLEET_REDIS_MAX_OPEN_CONNS=-7\nFLEET_REDIS_CONN_MAX_LIFETIME=0\nFLEET_REDIS_IDLE_TIMEOUT=500ms\nFLEET_REDIS_CONN_WAIT_TIMEOUT=5m\nFLEET_REDIS_WRITE_TIMEOUT=1h30m\nFLEET_REDIS_READ_TIMEOUT=0\nFLEET_REDIS_HOST_CACHE_ENABLED=false\nFLEET_REDIS_HOST_CACHE_TTL=5m\nFLEET_REDIS_LIVE_QUERY_SMALL_TARGET_THRESHOLD=-7",
+      "errors": [],
+      "flags": "--redis_address=plain\n--redis_username=with space\n--redis_password=s3cret: #pass\n--redis_database=-7\n--redis_use_tls=true\n--redis_region=-dash\n--redis_cache_name=x #y\n--redis_sts_assume_role_arn=plain\n--redis_sts_external_id=with space\n--redis_duplicate_results=false\n--redis_connect_timeout=0\n--redis_keep_alive=500ms\n--redis_connect_retry_attempts=42\n--redis_cluster_follow_redirections=false\n--redis_cluster_read_from_replica=true\n--redis_tls_cert=with space\n--redis_tls_key=yes\n--redis_tls_ca=123\n--redis_tls_server_name=a: b\n--redis_tls_handshake_timeout=500ms\n--redis_max_idle_conns=42\n--redis_max_open_conns=-7\n--redis_conn_max_lifetime=0\n--redis_idle_timeout=500ms\n--redis_conn_wait_timeout=5m\n--redis_write_timeout=1h30m\n--redis_read_timeout=0\n--redis_host_cache_enabled=false\n--redis_host_cache_ttl=5m\n--redis_live_query_small_target_threshold=-7",
+      "yaml": "redis:\n  address: plain\n  username: with space\n  password: \"s3cret: #pass\"\n  database: -7\n  use_tls: true\n  region: \"-dash\"\n  cache_name: \"x #y\"\n  sts_assume_role_arn: plain\n  sts_external_id: with space\n  duplicate_results: false\n  connect_timeout: \"0\"\n  keep_alive: 500ms\n  connect_retry_attempts: 42\n  cluster_follow_redirections: false\n  cluster_read_from_replica: true\n  tls_cert: with space\n  tls_key: \"yes\"\n  tls_ca: \"123\"\n  tls_server_name: \"a: b\"\n  tls_handshake_timeout: 500ms\n  max_idle_conns: 42\n  max_open_conns: -7\n  conn_max_lifetime: \"0\"\n  idle_timeout: 500ms\n  conn_wait_timeout: 5m\n  write_timeout: 1h30m\n  read_timeout: \"0\"\n  host_cache_enabled: false\n  host_cache_ttl: 5m\n  live_query_small_target_threshold: -7\n"
+    },
+    "extra_yaml": "",
+    "name": "redis: all fields filled",
+    "values": {
+      "redis": {
+        "address": "plain",
+        "cache_name": "x #y",
+        "cluster_follow_redirections": "false",
+        "cluster_read_from_replica": "true",
+        "conn_max_lifetime": "0",
+        "conn_wait_timeout": "5m",
+        "connect_retry_attempts": "42",
+        "connect_timeout": "0",
+        "database": "-7",
+        "duplicate_results": "false",
+        "host_cache_enabled": "false",
+        "host_cache_ttl": "5m",
+        "idle_timeout": "500ms",
+        "keep_alive": "500ms",
+        "live_query_small_target_threshold": "-7",
+        "max_idle_conns": "42",
+        "max_open_conns": "-7",
+        "password": "s3cret: #pass",
+        "read_timeout": "0",
+        "region": "-dash",
+        "sts_assume_role_arn": "plain",
+        "sts_external_id": "with space",
+        "tls_ca": "123",
+        "tls_cert": "with space",
+        "tls_handshake_timeout": "500ms",
+        "tls_key": "yes",
+        "tls_server_name": "a: b",
+        "use_tls": "true",
+        "username": "with space",
+        "write_timeout": "1h30m"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_REDIS_ADDRESS=ok\nFLEET_REDIS_USERNAME=ok\nFLEET_REDIS_PASSWORD=ok\nFLEET_REDIS_REGION=ok\nFLEET_REDIS_CACHE_NAME=ok\nFLEET_REDIS_STS_ASSUME_ROLE_ARN=ok\nFLEET_REDIS_STS_EXTERNAL_ID=ok\nFLEET_REDIS_TLS_CERT=ok\nFLEET_REDIS_TLS_KEY=ok\nFLEET_REDIS_TLS_CA=ok\nFLEET_REDIS_TLS_SERVER_NAME=ok",
+      "errors": [
+        {
+          "field": "database",
+          "label": "Database",
+          "message": "Database must be a whole number",
+          "section": "redis"
+        },
+        {
+          "field": "use_tls",
+          "label": "Use TLS",
+          "message": "Use TLS must be true or false",
+          "section": "redis"
+        },
+        {
+          "field": "duplicate_results",
+          "label": "Duplicate results",
+          "message": "Duplicate results must be true or false",
+          "section": "redis"
+        },
+        {
+          "field": "connect_timeout",
+          "label": "Connect timeout",
+          "message": "Connect timeout doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "redis"
+        },
+        {
+          "field": "keep_alive",
+          "label": "Keep alive",
+          "message": "Keep alive doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "redis"
+        },
+        {
+          "field": "connect_retry_attempts",
+          "label": "Connect retry attempts",
+          "message": "Connect retry attempts must be a whole number",
+          "section": "redis"
+        },
+        {
+          "field": "cluster_follow_redirections",
+          "label": "Cluster follow redirections",
+          "message": "Cluster follow redirections must be true or false",
+          "section": "redis"
+        },
+        {
+          "field": "cluster_read_from_replica",
+          "label": "Cluster read from replica",
+          "message": "Cluster read from replica must be true or false",
+          "section": "redis"
+        },
+        {
+          "field": "tls_handshake_timeout",
+          "label": "TLS handshake timeout",
+          "message": "TLS handshake timeout doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "redis"
+        },
+        {
+          "field": "max_idle_conns",
+          "label": "Max idle connections",
+          "message": "Max idle connections must be a whole number",
+          "section": "redis"
+        },
+        {
+          "field": "max_open_conns",
+          "label": "Max open connections",
+          "message": "Max open connections must be a whole number",
+          "section": "redis"
+        },
+        {
+          "field": "conn_max_lifetime",
+          "label": "Connection max lifetime",
+          "message": "Connection max lifetime doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "redis"
+        },
+        {
+          "field": "idle_timeout",
+          "label": "Idle timeout",
+          "message": "Idle timeout doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "redis"
+        },
+        {
+          "field": "conn_wait_timeout",
+          "label": "Connection wait timeout",
+          "message": "Connection wait timeout doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "redis"
+        },
+        {
+          "field": "write_timeout",
+          "label": "Write timeout",
+          "message": "Write timeout doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "redis"
+        },
+        {
+          "field": "read_timeout",
+          "label": "Read timeout",
+          "message": "Read timeout doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "redis"
+        },
+        {
+          "field": "host_cache_enabled",
+          "label": "Host cache enabled",
+          "message": "Host cache enabled must be true or false",
+          "section": "redis"
+        },
+        {
+          "field": "host_cache_ttl",
+          "label": "Host cache TTL",
+          "message": "Host cache TTL doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "redis"
+        },
+        {
+          "field": "live_query_small_target_threshold",
+          "label": "Live query small target threshold",
+          "message": "Live query small target threshold must be a whole number",
+          "section": "redis"
+        }
+      ],
+      "flags": "--redis_address=ok\n--redis_username=ok\n--redis_password=ok\n--redis_region=ok\n--redis_cache_name=ok\n--redis_sts_assume_role_arn=ok\n--redis_sts_external_id=ok\n--redis_tls_cert=ok\n--redis_tls_key=ok\n--redis_tls_ca=ok\n--redis_tls_server_name=ok",
+      "yaml": "redis:\n  address: ok\n  username: ok\n  password: ok\n  region: ok\n  cache_name: ok\n  sts_assume_role_arn: ok\n  sts_external_id: ok\n  tls_cert: ok\n  tls_key: ok\n  tls_ca: ok\n  tls_server_name: ok\n"
+    },
+    "extra_yaml": "",
+    "name": "redis: all fields invalid",
+    "values": {
+      "redis": {
+        "address": "ok",
+        "cache_name": "ok",
+        "cluster_follow_redirections": "maybe",
+        "cluster_read_from_replica": "maybe",
+        "conn_max_lifetime": "5 minutes",
+        "conn_wait_timeout": "5 minutes",
+        "connect_retry_attempts": "4x",
+        "connect_timeout": "5 minutes",
+        "database": "4x",
+        "duplicate_results": "maybe",
+        "host_cache_enabled": "maybe",
+        "host_cache_ttl": "5 minutes",
+        "idle_timeout": "5 minutes",
+        "keep_alive": "5 minutes",
+        "live_query_small_target_threshold": "4x",
+        "max_idle_conns": "4x",
+        "max_open_conns": "4x",
+        "password": "ok",
+        "read_timeout": "5 minutes",
+        "region": "ok",
+        "sts_assume_role_arn": "ok",
+        "sts_external_id": "ok",
+        "tls_ca": "ok",
+        "tls_cert": "ok",
+        "tls_handshake_timeout": "5 minutes",
+        "tls_key": "ok",
+        "tls_server_name": "ok",
+        "use_tls": "maybe",
+        "username": "ok",
+        "write_timeout": "5 minutes"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "",
+      "errors": [],
+      "flags": "",
+      "yaml": ""
+    },
+    "extra_yaml": "",
+    "name": "redis: whitespace is trimmed",
+    "values": {
+      "redis": {
+        "address": "  ",
+        "cache_name": "  ",
+        "cluster_follow_redirections": "  ",
+        "cluster_read_from_replica": "  ",
+        "conn_max_lifetime": "  ",
+        "conn_wait_timeout": "  ",
+        "connect_retry_attempts": "  ",
+        "connect_timeout": "  ",
+        "database": "  ",
+        "duplicate_results": "  ",
+        "host_cache_enabled": "  ",
+        "host_cache_ttl": "  ",
+        "idle_timeout": "  ",
+        "keep_alive": "  ",
+        "live_query_small_target_threshold": "  ",
+        "max_idle_conns": "  ",
+        "max_open_conns": "  ",
+        "password": "  ",
+        "read_timeout": "  ",
+        "region": "  ",
+        "sts_assume_role_arn": "  ",
+        "sts_external_id": "  ",
+        "tls_ca": "  ",
+        "tls_cert": "  ",
+        "tls_handshake_timeout": "  ",
+        "tls_key": "  ",
+        "tls_server_name": "  ",
+        "use_tls": "  ",
+        "username": "  ",
+        "write_timeout": "  "
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_SERVER_ADDRESS=plain\nFLEET_SERVER_CERT=with space\nFLEET_SERVER_KEY=yes\nFLEET_SERVER_TLS=false\nFLEET_SERVER_TLS_COMPATIBILITY=modern\nFLEET_SERVER_URL_PREFIX=-dash\nFLEET_SERVER_KEEPALIVE=true\nFLEET_SERVER_WEBSOCKETS_ALLOW_UNSAFE_ORIGIN=false\nFLEET_SERVER_FREQUENT_CLEANUPS_ENABLED=true\nFLEET_SERVER_FORCE_H2C=false\nFLEET_SERVER_PRIVATE_KEY=s3cret: #pass\nFLEET_SERVER_PRIVATE_KEY_ARN=a: b\nFLEET_SERVER_PRIVATE_KEY_REGION=-dash\nFLEET_SERVER_PRIVATE_KEY_STS_ASSUME_ROLE_ARN=x #y\nFLEET_SERVER_PRIVATE_KEY_STS_EXTERNAL_ID=plain\nFLEET_SERVER_VPP_VERIFY_TIMEOUT=500ms\nFLEET_SERVER_VPP_VERIFY_REQUEST_DELAY=5m\nFLEET_SERVER_CLEANUP_DIST_TARGETS_AGE=1h30m\nFLEET_SERVER_MAX_INSTALLER_SIZE=1024\nFLEET_SERVER_TRUSTED_PROXIES=-dash\nFLEET_SERVER_GZIP_RESPONSES=true\nFLEET_SERVER_DEFAULT_MAX_REQUEST_BODY_SIZE=500 KB\nFLEET_SERVER_ALLOW_PRIVATE_NETWORK_INTEGRATIONS=true\nFLEET_SERVER_BYPASS_NETWORK_BLOCKING=false",
+      "errors": [],
+      "flags": "--server_address=plain\n--server_cert=with space\n--server_key=yes\n--server_tls=false\n--server_tls_compatibility=modern\n--server_url_prefix=-dash\n--server_keepalive=true\n--server_websockets_allow_unsafe_origin=false\n--server_frequent_cleanups_enabled=true\n--server_force_h2c=false\n--server_private_key=s3cret: #pass\n--server_private_key_arn=a: b\n--server_private_key_region=-dash\n--server_private_key_sts_assume_role_arn=x #y\n--server_private_key_sts_external_id=plain\n--server_vpp_verify_timeout=500ms\n--server_vpp_verify_request_delay=5m\n--server_cleanup_dist_targets_age=1h30m\n--server_max_installer_size=1024\n--server_trusted_proxies=-dash\n--server_gzip_responses=true\n--server_default_max_request_body_size=500 KB\n--server_allow_private_network_integrations=true\n--server_bypass_network_blocking=false",
+      "yaml": "server:\n  address: plain\n  cert: with space\n  key: \"yes\"\n  tls: false\n  tls_compatibility: modern\n  url_prefix: \"-dash\"\n  keepalive: true\n  websockets_allow_unsafe_origin: false\n  frequent_cleanups_enabled: true\n  force_h2c: false\n  private_key: \"s3cret: #pass\"\n  private_key_arn: \"a: b\"\n  private_key_region: \"-dash\"\n  private_key_sts_assume_role_arn: \"x #y\"\n  private_key_sts_external_id: plain\n  vpp_verify_timeout: 500ms\n  vpp_verify_request_delay: 5m\n  cleanup_dist_targets_age: 1h30m\n  max_installer_size: \"1024\"\n  trusted_proxies: \"-dash\"\n  gzip_responses: true\n  default_max_request_body_size: 500 KB\n  allow_private_network_integrations: true\n  bypass_network_blocking: false\n"
+    },
+    "extra_yaml": "",
+    "name": "server: all fields filled",
+    "values": {
+      "server": {
+        "address": "plain",
+        "allow_private_network_integrations": "true",
+        "bypass_network_blocking": "false",
+        "cert": "with space",
+        "cleanup_dist_targets_age": "1h30m",
+        "default_max_request_body_size": "500 KB",
+        "force_h2c": "false",
+        "frequent_cleanups_enabled": "true",
+        "gzip_responses": "true",
+        "keepalive": "true",
+        "key": "yes",
+        "max_installer_size": "1024",
+        "private_key": "s3cret: #pass",
+        "private_key_arn": "a: b",
+        "private_key_region": "-dash",
+        "private_key_sts_assume_role_arn": "x #y",
+        "private_key_sts_external_id": "plain",
+        "tls": "false",
+        "tls_compatibility": "modern",
+        "trusted_proxies": "-dash",
+        "url_prefix": "-dash",
+        "vpp_verify_request_delay": "5m",
+        "vpp_verify_timeout": "500ms",
+        "websockets_allow_unsafe_origin": "false"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_SERVER_ADDRESS=ok\nFLEET_SERVER_CERT=ok\nFLEET_SERVER_KEY=ok\nFLEET_SERVER_URL_PREFIX=ok\nFLEET_SERVER_PRIVATE_KEY=ok\nFLEET_SERVER_PRIVATE_KEY_ARN=ok\nFLEET_SERVER_PRIVATE_KEY_REGION=ok\nFLEET_SERVER_PRIVATE_KEY_STS_ASSUME_ROLE_ARN=ok\nFLEET_SERVER_PRIVATE_KEY_STS_EXTERNAL_ID=ok\nFLEET_SERVER_TRUSTED_PROXIES=ok",
+      "errors": [
+        {
+          "field": "tls",
+          "label": "Serve over TLS",
+          "message": "Serve over TLS must be true or false",
+          "section": "server"
+        },
+        {
+          "field": "tls_compatibility",
+          "label": "TLS compatibility",
+          "message": "TLS compatibility must be one of: modern, intermediate",
+          "section": "server"
+        },
+        {
+          "field": "keepalive",
+          "label": "Keepalive",
+          "message": "Keepalive must be true or false",
+          "section": "server"
+        },
+        {
+          "field": "websockets_allow_unsafe_origin",
+          "label": "Allow unsafe websocket origin",
+          "message": "Allow unsafe websocket origin must be true or false",
+          "section": "server"
+        },
+        {
+          "field": "frequent_cleanups_enabled",
+          "label": "Frequent cleanups enabled",
+          "message": "Frequent cleanups enabled must be true or false",
+          "section": "server"
+        },
+        {
+          "field": "force_h2c",
+          "label": "Force H2C",
+          "message": "Force H2C must be true or false",
+          "section": "server"
+        },
+        {
+          "field": "vpp_verify_timeout",
+          "label": "VPP verify timeout",
+          "message": "VPP verify timeout doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "server"
+        },
+        {
+          "field": "vpp_verify_request_delay",
+          "label": "VPP verify request delay",
+          "message": "VPP verify request delay doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "server"
+        },
+        {
+          "field": "cleanup_dist_targets_age",
+          "label": "Cleanup distributed targets age",
+          "message": "Cleanup distributed targets age doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "server"
+        },
+        {
+          "field": "max_installer_size",
+          "label": "Max installer size",
+          "message": "Max installer size doesn't look like a valid size (e.g. 10GiB, 500KB, or a plain number of bytes)",
+          "section": "server"
+        },
+        {
+          "field": "gzip_responses",
+          "label": "Gzip responses",
+          "message": "Gzip responses must be true or false",
+          "section": "server"
+        },
+        {
+          "field": "default_max_request_body_size",
+          "label": "Default max request body size",
+          "message": "Default max request body size doesn't look like a valid size (e.g. 10GiB, 500KB, or a plain number of bytes)",
+          "section": "server"
+        },
+        {
+          "field": "allow_private_network_integrations",
+          "label": "Allow private network integrations",
+          "message": "Allow private network integrations must be true or false",
+          "section": "server"
+        },
+        {
+          "field": "bypass_network_blocking",
+          "label": "Bypass network blocking",
+          "message": "Bypass network blocking must be true or false",
+          "section": "server"
+        }
+      ],
+      "flags": "--server_address=ok\n--server_cert=ok\n--server_key=ok\n--server_url_prefix=ok\n--server_private_key=ok\n--server_private_key_arn=ok\n--server_private_key_region=ok\n--server_private_key_sts_assume_role_arn=ok\n--server_private_key_sts_external_id=ok\n--server_trusted_proxies=ok",
+      "yaml": "server:\n  address: ok\n  cert: ok\n  key: ok\n  url_prefix: ok\n  private_key: ok\n  private_key_arn: ok\n  private_key_region: ok\n  private_key_sts_assume_role_arn: ok\n  private_key_sts_external_id: ok\n  trusted_proxies: ok\n"
+    },
+    "extra_yaml": "",
+    "name": "server: all fields invalid",
+    "values": {
+      "server": {
+        "address": "ok",
+        "allow_private_network_integrations": "maybe",
+        "bypass_network_blocking": "maybe",
+        "cert": "ok",
+        "cleanup_dist_targets_age": "5 minutes",
+        "default_max_request_body_size": "ten",
+        "force_h2c": "maybe",
+        "frequent_cleanups_enabled": "maybe",
+        "gzip_responses": "maybe",
+        "keepalive": "maybe",
+        "key": "ok",
+        "max_installer_size": "ten",
+        "private_key": "ok",
+        "private_key_arn": "ok",
+        "private_key_region": "ok",
+        "private_key_sts_assume_role_arn": "ok",
+        "private_key_sts_external_id": "ok",
+        "tls": "maybe",
+        "tls_compatibility": "nope",
+        "trusted_proxies": "ok",
+        "url_prefix": "ok",
+        "vpp_verify_request_delay": "5 minutes",
+        "vpp_verify_timeout": "5 minutes",
+        "websockets_allow_unsafe_origin": "maybe"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "",
+      "errors": [],
+      "flags": "",
+      "yaml": ""
+    },
+    "extra_yaml": "",
+    "name": "server: whitespace is trimmed",
+    "values": {
+      "server": {
+        "address": "  ",
+        "allow_private_network_integrations": "  ",
+        "bypass_network_blocking": "  ",
+        "cert": "  ",
+        "cleanup_dist_targets_age": "  ",
+        "default_max_request_body_size": "  ",
+        "force_h2c": "  ",
+        "frequent_cleanups_enabled": "  ",
+        "gzip_responses": "  ",
+        "keepalive": "  ",
+        "key": "  ",
+        "max_installer_size": "  ",
+        "private_key": "  ",
+        "private_key_arn": "  ",
+        "private_key_region": "  ",
+        "private_key_sts_assume_role_arn": "  ",
+        "private_key_sts_external_id": "  ",
+        "tls": "  ",
+        "tls_compatibility": "  ",
+        "trusted_proxies": "  ",
+        "url_prefix": "  ",
+        "vpp_verify_request_delay": "  ",
+        "vpp_verify_timeout": "  ",
+        "websockets_allow_unsafe_origin": "  "
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_AUTH_SSO_SESSION_VALIDITY_PERIOD=5m\nFLEET_AUTH_BCRYPT_COST=-7\nFLEET_AUTH_SALT_KEY_SIZE=42\nFLEET_AUTH_REQUIRE_HTTP_MESSAGE_SIGNATURE=false\nFLEET_AUTH_SSO_RATE_LIMIT_PER_MINUTE=42",
+      "errors": [],
+      "flags": "--auth_sso_session_validity_period=5m\n--auth_bcrypt_cost=-7\n--auth_salt_key_size=42\n--auth_require_http_message_signature=false\n--auth_sso_rate_limit_per_minute=42",
+      "yaml": "auth:\n  sso_session_validity_period: 5m\n  bcrypt_cost: -7\n  salt_key_size: 42\n  require_http_message_signature: false\n  sso_rate_limit_per_minute: 42\n"
+    },
+    "extra_yaml": "",
+    "name": "auth: all fields filled",
+    "values": {
+      "auth": {
+        "bcrypt_cost": "-7",
+        "require_http_message_signature": "false",
+        "salt_key_size": "42",
+        "sso_rate_limit_per_minute": "42",
+        "sso_session_validity_period": "5m"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "",
+      "errors": [
+        {
+          "field": "sso_session_validity_period",
+          "label": "SSO session validity period",
+          "message": "SSO session validity period doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "auth"
+        },
+        {
+          "field": "bcrypt_cost",
+          "label": "Bcrypt cost",
+          "message": "Bcrypt cost must be a whole number",
+          "section": "auth"
+        },
+        {
+          "field": "salt_key_size",
+          "label": "Salt key size",
+          "message": "Salt key size must be a whole number",
+          "section": "auth"
+        },
+        {
+          "field": "require_http_message_signature",
+          "label": "Require HTTP message signature",
+          "message": "Require HTTP message signature must be true or false",
+          "section": "auth"
+        },
+        {
+          "field": "sso_rate_limit_per_minute",
+          "label": "SSO rate limit per minute",
+          "message": "SSO rate limit per minute must be a whole number",
+          "section": "auth"
+        }
+      ],
+      "flags": "",
+      "yaml": ""
+    },
+    "extra_yaml": "",
+    "name": "auth: all fields invalid",
+    "values": {
+      "auth": {
+        "bcrypt_cost": "4x",
+        "require_http_message_signature": "maybe",
+        "salt_key_size": "4x",
+        "sso_rate_limit_per_minute": "4x",
+        "sso_session_validity_period": "5 minutes"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "",
+      "errors": [],
+      "flags": "",
+      "yaml": ""
+    },
+    "extra_yaml": "",
+    "name": "auth: whitespace is trimmed",
+    "values": {
+      "auth": {
+        "bcrypt_cost": "  ",
+        "require_http_message_signature": "  ",
+        "salt_key_size": "  ",
+        "sso_rate_limit_per_minute": "  ",
+        "sso_session_validity_period": "  "
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_APP_ENABLE_SCHEDULED_QUERY_STATS=true\nFLEET_APP_TOKEN_KEY_SIZE=-7\nFLEET_APP_INVITE_TOKEN_VALIDITY_PERIOD=0",
+      "errors": [],
+      "flags": "--app_enable_scheduled_query_stats=true\n--app_token_key_size=-7\n--app_invite_token_validity_period=0",
+      "yaml": "app:\n  enable_scheduled_query_stats: true\n  token_key_size: -7\n  invite_token_validity_period: \"0\"\n"
+    },
+    "extra_yaml": "",
+    "name": "app: all fields filled",
+    "values": {
+      "app": {
+        "enable_scheduled_query_stats": "true",
+        "invite_token_validity_period": "0",
+        "token_key_size": "-7"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "",
+      "errors": [
+        {
+          "field": "enable_scheduled_query_stats",
+          "label": "Enable scheduled query stats",
+          "message": "Enable scheduled query stats must be true or false",
+          "section": "app"
+        },
+        {
+          "field": "token_key_size",
+          "label": "Token key size",
+          "message": "Token key size must be a whole number",
+          "section": "app"
+        },
+        {
+          "field": "invite_token_validity_period",
+          "label": "Invite token validity period",
+          "message": "Invite token validity period doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "app"
+        }
+      ],
+      "flags": "",
+      "yaml": ""
+    },
+    "extra_yaml": "",
+    "name": "app: all fields invalid",
+    "values": {
+      "app": {
+        "enable_scheduled_query_stats": "maybe",
+        "invite_token_validity_period": "5 minutes",
+        "token_key_size": "4x"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "",
+      "errors": [],
+      "flags": "",
+      "yaml": ""
+    },
+    "extra_yaml": "",
+    "name": "app: whitespace is trimmed",
+    "values": {
+      "app": {
+        "enable_scheduled_query_stats": "  ",
+        "invite_token_validity_period": "  ",
+        "token_key_size": "  "
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_SESSION_KEY_SIZE=42\nFLEET_SESSION_DURATION=1h30m",
+      "errors": [],
+      "flags": "--session_key_size=42\n--session_duration=1h30m",
+      "yaml": "session:\n  key_size: 42\n  duration: 1h30m\n"
+    },
+    "extra_yaml": "",
+    "name": "session: all fields filled",
+    "values": {
+      "session": {
+        "duration": "1h30m",
+        "key_size": "42"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "",
+      "errors": [
+        {
+          "field": "key_size",
+          "label": "Key size",
+          "message": "Key size must be a whole number",
+          "section": "session"
+        },
+        {
+          "field": "duration",
+          "label": "Duration",
+          "message": "Duration doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "session"
+        }
+      ],
+      "flags": "",
+      "yaml": ""
+    },
+    "extra_yaml": "",
+    "name": "session: all fields invalid",
+    "values": {
+      "session": {
+        "duration": "5 minutes",
+        "key_size": "4x"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "",
+      "errors": [],
+      "flags": "",
+      "yaml": ""
+    },
+    "extra_yaml": "",
+    "name": "session: whitespace is trimmed",
+    "values": {
+      "session": {
+        "duration": "  ",
+        "key_size": "  "
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_OSQUERY_NODE_KEY_SIZE=42\nFLEET_OSQUERY_HOST_IDENTIFIER=provided\nFLEET_OSQUERY_ENROLL_COOLDOWN=0\nFLEET_OSQUERY_STATUS_LOG_PLUGIN=filesystem\nFLEET_OSQUERY_RESULT_LOG_PLUGIN=filesystem\nFLEET_OSQUERY_LABEL_UPDATE_INTERVAL=1h30m\nFLEET_OSQUERY_POLICY_UPDATE_INTERVAL=0\nFLEET_OSQUERY_DETAIL_UPDATE_INTERVAL=500ms\nFLEET_OSQUERY_MAX_JITTER_PERCENT=42\nFLEET_OSQUERY_ENABLE_ASYNC_HOST_PROCESSING=yes\nFLEET_OSQUERY_ASYNC_HOST_COLLECT_INTERVAL=123\nFLEET_OSQUERY_ASYNC_HOST_COLLECT_MAX_JITTER_PERCENT=-7\nFLEET_OSQUERY_ASYNC_HOST_COLLECT_LOCK_TIMEOUT=-dash\nFLEET_OSQUERY_ASYNC_HOST_COLLECT_LOG_STATS_INTERVAL=1h30m\nFLEET_OSQUERY_ASYNC_HOST_INSERT_BATCH=42\nFLEET_OSQUERY_ASYNC_HOST_DELETE_BATCH=-7\nFLEET_OSQUERY_ASYNC_HOST_UPDATE_BATCH=42\nFLEET_OSQUERY_ASYNC_HOST_REDIS_POP_COUNT=-7\nFLEET_OSQUERY_ASYNC_HOST_REDIS_SCAN_KEYS_COUNT=42\nFLEET_OSQUERY_MIN_SOFTWARE_LAST_OPENED_AT_DIFF=500ms\nFLEET_OSQUERY_MAX_LOG_WRITE_BODY_SIZE=10GiB\nFLEET_OSQUERY_MAX_DISTRIBUTED_WRITE_BODY_SIZE=500 KB\nFLEET_OSQUERY_ALLOW_BODY_AUTH_FALLBACK=true",
+      "errors": [],
+      "flags": "--osquery_node_key_size=42\n--osquery_host_identifier=provided\n--osquery_enroll_cooldown=0\n--osquery_status_log_plugin=filesystem\n--osquery_result_log_plugin=filesystem\n--osquery_label_update_interval=1h30m\n--osquery_policy_update_interval=0\n--osquery_detail_update_interval=500ms\n--osquery_max_jitter_percent=42\n--osquery_enable_async_host_processing=yes\n--osquery_async_host_collect_interval=123\n--osquery_async_host_collect_max_jitter_percent=-7\n--osquery_async_host_collect_lock_timeout=-dash\n--osquery_async_host_collect_log_stats_interval=1h30m\n--osquery_async_host_insert_batch=42\n--osquery_async_host_delete_batch=-7\n--osquery_async_host_update_batch=42\n--osquery_async_host_redis_pop_count=-7\n--osquery_async_host_redis_scan_keys_count=42\n--osquery_min_software_last_opened_at_diff=500ms\n--osquery_max_log_write_body_size=10GiB\n--osquery_max_distributed_write_body_size=500 KB\n--osquery_allow_body_auth_fallback=true",
+      "yaml": "osquery:\n  node_key_size: 42\n  host_identifier: provided\n  enroll_cooldown: \"0\"\n  status_log_plugin: filesystem\n  result_log_plugin: filesystem\n  label_update_interval: 1h30m\n  policy_update_interval: \"0\"\n  detail_update_interval: 500ms\n  max_jitter_percent: 42\n  enable_async_host_processing: \"yes\"\n  async_host_collect_interval: \"123\"\n  async_host_collect_max_jitter_percent: -7\n  async_host_collect_lock_timeout: \"-dash\"\n  async_host_collect_log_stats_interval: 1h30m\n  async_host_insert_batch: 42\n  async_host_delete_batch: -7\n  async_host_update_batch: 42\n  async_host_redis_pop_count: -7\n  async_host_redis_scan_keys_count: 42\n  min_software_last_opened_at_diff: 500ms\n  max_log_write_body_size: 10GiB\n  max_distributed_write_body_size: 500 KB\n  allow_body_auth_fallback: true\n"
+    },
+    "extra_yaml": "",
+    "name": "osquery: all fields filled",
+    "values": {
+      "osquery": {
+        "allow_body_auth_fallback": "true",
+        "async_host_collect_interval": "123",
+        "async_host_collect_lock_timeout": "-dash",
+        "async_host_collect_log_stats_interval": "1h30m",
+        "async_host_collect_max_jitter_percent": "-7",
+        "async_host_delete_batch": "-7",
+        "async_host_insert_batch": "42",
+        "async_host_redis_pop_count": "-7",
+        "async_host_redis_scan_keys_count": "42",
+        "async_host_update_batch": "42",
+        "detail_update_interval": "500ms",
+        "enable_async_host_processing": "yes",
+        "enroll_cooldown": "0",
+        "host_identifier": "provided",
+        "label_update_interval": "1h30m",
+        "max_distributed_write_body_size": "500 KB",
+        "max_jitter_percent": "42",
+        "max_log_write_body_size": "10GiB",
+        "min_software_last_opened_at_diff": "500ms",
+        "node_key_size": "42",
+        "policy_update_interval": "0",
+        "result_log_plugin": "filesystem",
+        "status_log_plugin": "filesystem"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_OSQUERY_ENABLE_ASYNC_HOST_PROCESSING=ok\nFLEET_OSQUERY_ASYNC_HOST_COLLECT_INTERVAL=ok\nFLEET_OSQUERY_ASYNC_HOST_COLLECT_LOCK_TIMEOUT=ok",
+      "errors": [
+        {
+          "field": "node_key_size",
+          "label": "Node key size",
+          "message": "Node key size must be a whole number",
+          "section": "osquery"
+        },
+        {
+          "field": "host_identifier",
+          "label": "Host identifier",
+          "message": "Host identifier must be one of: provided, instance, uuid, hostname",
+          "section": "osquery"
+        },
+        {
+          "field": "enroll_cooldown",
+          "label": "Enroll cooldown",
+          "message": "Enroll cooldown doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "osquery"
+        },
+        {
+          "field": "status_log_plugin",
+          "label": "Status log plugin",
+          "message": "Status log plugin must be one of: filesystem, firehose, kinesis, lambda, pubsub, kafkarest, nats, splunk, stdout",
+          "section": "osquery"
+        },
+        {
+          "field": "result_log_plugin",
+          "label": "Result log plugin",
+          "message": "Result log plugin must be one of: filesystem, firehose, kinesis, lambda, pubsub, kafkarest, nats, splunk, stdout",
+          "section": "osquery"
+        },
+        {
+          "field": "label_update_interval",
+          "label": "Label update interval",
+          "message": "Label update interval doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "osquery"
+        },
+        {
+          "field": "policy_update_interval",
+          "label": "Policy update interval",
+          "message": "Policy update interval doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "osquery"
+        },
+        {
+          "field": "detail_update_interval",
+          "label": "Detail update interval",
+          "message": "Detail update interval doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "osquery"
+        },
+        {
+          "field": "max_jitter_percent",
+          "label": "Max jitter percent",
+          "message": "Max jitter percent must be a whole number",
+          "section": "osquery"
+        },
+        {
+          "field": "async_host_collect_max_jitter_percent",
+          "label": "Async host collect max jitter percent",
+          "message": "Async host collect max jitter percent must be a whole number",
+          "section": "osquery"
+        },
+        {
+          "field": "async_host_collect_log_stats_interval",
+          "label": "Async host collect log stats interval",
+          "message": "Async host collect log stats interval doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "osquery"
+        },
+        {
+          "field": "async_host_insert_batch",
+          "label": "Async host insert batch",
+          "message": "Async host insert batch must be a whole number",
+          "section": "osquery"
+        },
+        {
+          "field": "async_host_delete_batch",
+          "label": "Async host delete batch",
+          "message": "Async host delete batch must be a whole number",
+          "section": "osquery"
+        },
+        {
+          "field": "async_host_update_batch",
+          "label": "Async host update batch",
+          "message": "Async host update batch must be a whole number",
+          "section": "osquery"
+        },
+        {
+          "field": "async_host_redis_pop_count",
+          "label": "Async host Redis pop count",
+          "message": "Async host Redis pop count must be a whole number",
+          "section": "osquery"
+        },
+        {
+          "field": "async_host_redis_scan_keys_count",
+          "label": "Async host Redis scan keys count",
+          "message": "Async host Redis scan keys count must be a whole number",
+          "section": "osquery"
+        },
+        {
+          "field": "min_software_last_opened_at_diff",
+          "label": "Min software last opened at diff",
+          "message": "Min software last opened at diff doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "osquery"
+        },
+        {
+          "field": "max_log_write_body_size",
+          "label": "Max log write body size",
+          "message": "Max log write body size doesn't look like a valid size (e.g. 10GiB, 500KB, or a plain number of bytes)",
+          "section": "osquery"
+        },
+        {
+          "field": "max_distributed_write_body_size",
+          "label": "Max distributed write body size",
+          "message": "Max distributed write body size doesn't look like a valid size (e.g. 10GiB, 500KB, or a plain number of bytes)",
+          "section": "osquery"
+        },
+        {
+          "field": "allow_body_auth_fallback",
+          "label": "Allow body auth fallback",
+          "message": "Allow body auth fallback must be true or false",
+          "section": "osquery"
+        }
+      ],
+      "flags": "--osquery_enable_async_host_processing=ok\n--osquery_async_host_collect_interval=ok\n--osquery_async_host_collect_lock_timeout=ok",
+      "yaml": "osquery:\n  enable_async_host_processing: ok\n  async_host_collect_interval: ok\n  async_host_collect_lock_timeout: ok\n"
+    },
+    "extra_yaml": "",
+    "name": "osquery: all fields invalid",
+    "values": {
+      "osquery": {
+        "allow_body_auth_fallback": "maybe",
+        "async_host_collect_interval": "ok",
+        "async_host_collect_lock_timeout": "ok",
+        "async_host_collect_log_stats_interval": "5 minutes",
+        "async_host_collect_max_jitter_percent": "4x",
+        "async_host_delete_batch": "4x",
+        "async_host_insert_batch": "4x",
+        "async_host_redis_pop_count": "4x",
+        "async_host_redis_scan_keys_count": "4x",
+        "async_host_update_batch": "4x",
+        "detail_update_interval": "5 minutes",
+        "enable_async_host_processing": "ok",
+        "enroll_cooldown": "5 minutes",
+        "host_identifier": "nope",
+        "label_update_interval": "5 minutes",
+        "max_distributed_write_body_size": "ten",
+        "max_jitter_percent": "4x",
+        "max_log_write_body_size": "ten",
+        "min_software_last_opened_at_diff": "5 minutes",
+        "node_key_size": "4x",
+        "policy_update_interval": "5 minutes",
+        "result_log_plugin": "nope",
+        "status_log_plugin": "nope"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "",
+      "errors": [],
+      "flags": "",
+      "yaml": ""
+    },
+    "extra_yaml": "",
+    "name": "osquery: whitespace is trimmed",
+    "values": {
+      "osquery": {
+        "allow_body_auth_fallback": "  ",
+        "async_host_collect_interval": "  ",
+        "async_host_collect_lock_timeout": "  ",
+        "async_host_collect_log_stats_interval": "  ",
+        "async_host_collect_max_jitter_percent": "  ",
+        "async_host_delete_batch": "  ",
+        "async_host_insert_batch": "  ",
+        "async_host_redis_pop_count": "  ",
+        "async_host_redis_scan_keys_count": "  ",
+        "async_host_update_batch": "  ",
+        "detail_update_interval": "  ",
+        "enable_async_host_processing": "  ",
+        "enroll_cooldown": "  ",
+        "host_identifier": "  ",
+        "label_update_interval": "  ",
+        "max_distributed_write_body_size": "  ",
+        "max_jitter_percent": "  ",
+        "max_log_write_body_size": "  ",
+        "min_software_last_opened_at_diff": "  ",
+        "node_key_size": "  ",
+        "policy_update_interval": "  ",
+        "result_log_plugin": "  ",
+        "status_log_plugin": "  "
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_ACTIVITY_ENABLE_AUDIT_LOG=true\nFLEET_ACTIVITY_AUDIT_LOG_PLUGIN=filesystem",
+      "errors": [],
+      "flags": "--activity_enable_audit_log=true\n--activity_audit_log_plugin=filesystem",
+      "yaml": "activity:\n  enable_audit_log: true\n  audit_log_plugin: filesystem\n"
+    },
+    "extra_yaml": "",
+    "name": "activity: all fields filled",
+    "values": {
+      "activity": {
+        "audit_log_plugin": "filesystem",
+        "enable_audit_log": "true"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "",
+      "errors": [
+        {
+          "field": "enable_audit_log",
+          "label": "Enable audit log",
+          "message": "Enable audit log must be true or false",
+          "section": "activity"
+        },
+        {
+          "field": "audit_log_plugin",
+          "label": "Audit log plugin",
+          "message": "Audit log plugin must be one of: filesystem, firehose, kinesis, lambda, pubsub, kafkarest, nats, splunk, stdout",
+          "section": "activity"
+        }
+      ],
+      "flags": "",
+      "yaml": ""
+    },
+    "extra_yaml": "",
+    "name": "activity: all fields invalid",
+    "values": {
+      "activity": {
+        "audit_log_plugin": "nope",
+        "enable_audit_log": "maybe"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "",
+      "errors": [],
+      "flags": "",
+      "yaml": ""
+    },
+    "extra_yaml": "",
+    "name": "activity: whitespace is trimmed",
+    "values": {
+      "activity": {
+        "audit_log_plugin": "  ",
+        "enable_audit_log": "  "
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_LOGGING_DEBUG=true\nFLEET_LOGGING_JSON=false\nFLEET_LOGGING_DISABLE_BANNER=true\nFLEET_LOGGING_ERROR_RETENTION_PERIOD=500ms\nFLEET_LOGGING_TRACING_ENABLED=true\nFLEET_LOGGING_TRACING_TYPE=-dash\nFLEET_LOGGING_OTEL_LOGS_ENABLED=true\nFLEET_LOGGING_ENABLE_TOPICS=plain\nFLEET_LOGGING_DISABLE_TOPICS=with space",
+      "errors": [],
+      "flags": "--logging_debug=true\n--logging_json=false\n--logging_disable_banner=true\n--logging_error_retention_period=500ms\n--logging_tracing_enabled=true\n--logging_tracing_type=-dash\n--logging_otel_logs_enabled=true\n--logging_enable_topics=plain\n--logging_disable_topics=with space",
+      "yaml": "logging:\n  debug: true\n  json: false\n  disable_banner: true\n  error_retention_period: 500ms\n  tracing_enabled: true\n  tracing_type: \"-dash\"\n  otel_logs_enabled: true\n  enable_topics: plain\n  disable_topics: with space\n"
+    },
+    "extra_yaml": "",
+    "name": "logging: all fields filled",
+    "values": {
+      "logging": {
+        "debug": "true",
+        "disable_banner": "true",
+        "disable_topics": "with space",
+        "enable_topics": "plain",
+        "error_retention_period": "500ms",
+        "json": "false",
+        "otel_logs_enabled": "true",
+        "tracing_enabled": "true",
+        "tracing_type": "-dash"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_LOGGING_TRACING_TYPE=ok\nFLEET_LOGGING_ENABLE_TOPICS=ok\nFLEET_LOGGING_DISABLE_TOPICS=ok",
+      "errors": [
+        {
+          "field": "debug",
+          "label": "Debug",
+          "message": "Debug must be true or false",
+          "section": "logging"
+        },
+        {
+          "field": "json",
+          "label": "JSON",
+          "message": "JSON must be true or false",
+          "section": "logging"
+        },
+        {
+          "field": "disable_banner",
+          "label": "Disable banner",
+          "message": "Disable banner must be true or false",
+          "section": "logging"
+        },
+        {
+          "field": "error_retention_period",
+          "label": "Error retention period",
+          "message": "Error retention period doesn't look like a valid duration (e.g. 5m, 1h30m, 500ms, or 0)",
+          "section": "logging"
+        },
+        {
+          "field": "tracing_enabled",
+          "label": "Tracing enabled",
+          "message": "Tracing enabled must be true or false",
+          "section": "logging"
+        },
+        {
+          "field": "otel_logs_enabled",
+          "label": "OTel logs enabled",
+          "message": "OTel logs enabled must be true or false",
+          "section": "logging"
+        }
+      ],
+      "flags": "--logging_tracing_type=ok\n--logging_enable_topics=ok\n--logging_disable_topics=ok",
+      "yaml": "logging:\n  tracing_type: ok\n  enable_topics: ok\n  disable_topics: ok\n"
+    },
+    "extra_yaml": "",
+    "name": "logging: all fields invalid",
+    "values": {
+      "logging": {
+        "debug": "maybe",
+        "disable_banner": "maybe",
+        "disable_topics": "ok",
+        "enable_topics": "ok",
+        "error_retention_period": "5 minutes",
+        "json": "maybe",
+        "otel_logs_enabled": "maybe",
+        "tracing_enabled": "maybe",
+        "tracing_type": "ok"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "",
+      "errors": [],
+      "flags": "",
+      "yaml": ""
+    },
+    "extra_yaml": "",
+    "name": "logging: whitespace is trimmed",
+    "values": {
+      "logging": {
+        "debug": "  ",
+        "disable_banner": "  ",
+        "disable_topics": "  ",
+        "enable_topics": "  ",
+        "error_retention_period": "  ",
+        "json": "  ",
+        "otel_logs_enabled": "  ",
+        "tracing_enabled": "  ",
+        "tracing_type": "  "
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_LICENSE_KEY=s3cret: #pass\nFLEET_LICENSE_ENFORCE_HOST_LIMIT=false",
+      "errors": [],
+      "flags": "--license_key=s3cret: #pass\n--license_enforce_host_limit=false",
+      "yaml": "license:\n  key: \"s3cret: #pass\"\n  enforce_host_limit: false\n"
+    },
+    "extra_yaml": "",
+    "name": "license: all fields filled",
+    "values": {
+      "license": {
+        "enforce_host_limit": "false",
+        "key": "s3cret: #pass"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_LICENSE_KEY=ok",
+      "errors": [
+        {
+          "field": "enforce_host_limit",
+          "label": "Enforce host limit",
+          "message": "Enforce host limit must be true or false",
+          "section": "license"
+        }
+      ],
+      "flags": "--license_key=ok",
+      "yaml": "license:\n  key: ok\n"
+    },
+    "extra_yaml": "",
+    "name": "license: all fields invalid",
+    "values": {
+      "license": {
+        "enforce_host_limit": "maybe",
+        "key": "ok"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "",
+      "errors": [],
+      "flags": "",
+      "yaml": ""
+    },
+    "extra_yaml": "",
+    "name": "license: whitespace is trimmed",
+    "values": {
+      "license": {
+        "enforce_host_limit": "  ",
+        "key": "  "
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "",
+      "errors": [],
+      "flags": "",
+      "yaml": ""
+    },
+    "extra_yaml": "",
+    "name": "empty",
+    "values": {}
+  },
+  {
+    "expected": {
+      "env": "",
+      "errors": [],
+      "flags": "",
+      "yaml": "# ----- Advanced: appended as-is, not validated or merged with the above -----\nfilesystem:\n    status_log_file: /x\n"
+    },
+    "extra_yaml": "\n  filesystem:\n    status_log_file: /x\n\n",
+    "name": "extra yaml only",
+    "values": {}
+  },
+  {
+    "expected": {
+      "env": "FLEET_MYSQL_PROTOCOL=plain\nFLEET_MYSQL_ADDRESS=with space\nFLEET_MYSQL_USERNAME=yes\nFLEET_MYSQL_PASSWORD=s3cret: #pass\nFLEET_MYSQL_PASSWORD_PATH=a: b\nFLEET_MYSQL_DATABASE=-dash\nFLEET_MYSQL_TLS_CERT=x #y\nFLEET_MYSQL_TLS_KEY=plain\nFLEET_MYSQL_TLS_CA=with space\nFLEET_MYSQL_TLS_SERVER_NAME=yes\nFLEET_MYSQL_TLS_CONFIG=123\nFLEET_MYSQL_MAX_OPEN_CONNS=-7\nFLEET_MYSQL_MAX_IDLE_CONNS=42\nFLEET_MYSQL_CONN_MAX_LIFETIME=-7\nFLEET_MYSQL_SQL_MODE=plain\nFLEET_MYSQL_REGION=with space\nFLEET_MYSQL_STS_ASSUME_ROLE_ARN=yes\nFLEET_MYSQL_STS_EXTERNAL_ID=123\nFLEET_MYSQL_READ_REPLICA_PROTOCOL=plain\nFLEET_MYSQL_READ_REPLICA_ADDRESS=with space\nFLEET_MYSQL_READ_REPLICA_USERNAME=yes\nFLEET_MYSQL_READ_REPLICA_PASSWORD=s3cret: #pass\nFLEET_MYSQL_READ_REPLICA_PASSWORD_PATH=a: b\nFLEET_MYSQL_READ_REPLICA_DATABASE=-dash\nFLEET_MYSQL_READ_REPLICA_TLS_CERT=x #y\nFLEET_MYSQL_READ_REPLICA_TLS_KEY=plain\nFLEET_MYSQL_READ_REPLICA_TLS_CA=with space\nFLEET_MYSQL_READ_REPLICA_TLS_SERVER_NAME=yes\nFLEET_MYSQL_READ_REPLICA_TLS_CONFIG=123\nFLEET_MYSQL_READ_REPLICA_MAX_OPEN_CONNS=-7\nFLEET_MYSQL_READ_REPLICA_MAX_IDLE_CONNS=42\nFLEET_MYSQL_READ_REPLICA_CONN_MAX_LIFETIME=-7\nFLEET_MYSQL_READ_REPLICA_SQL_MODE=plain\nFLEET_MYSQL_READ_REPLICA_REGION=with space\nFLEET_MYSQL_READ_REPLICA_STS_ASSUME_ROLE_ARN=yes\nFLEET_MYSQL_READ_REPLICA_STS_EXTERNAL_ID=123\nFLEET_REDIS_ADDRESS=plain\nFLEET_REDIS_USERNAME=with space\nFLEET_REDIS_PASSWORD=s3cret: #pass\nFLEET_REDIS_DATABASE=-7\nFLEET_REDIS_USE_TLS=true\nFLEET_REDIS_REGION=-dash\nFLEET_REDIS_CACHE_NAME=x #y\nFLEET_REDIS_STS_ASSUME_ROLE_ARN=plain\nFLEET_REDIS_STS_EXTERNAL_ID=with space\nFLEET_REDIS_DUPLICATE_RESULTS=false\nFLEET_REDIS_CONNECT_TIMEOUT=0\nFLEET_REDIS_KEEP_ALIVE=500ms\nFLEET_REDIS_CONNECT_RETRY_ATTEMPTS=42\nFLEET_REDIS_CLUSTER_FOLLOW_REDIRECTIONS=false\nFLEET_REDIS_CLUSTER_READ_FROM_REPLICA=true\nFLEET_REDIS_TLS_CERT=with space\nFLEET_REDIS_TLS_KEY=yes\nFLEET_REDIS_TLS_CA=123\nFLEET_REDIS_TLS_SERVER_NAME=a: b\nFLEET_REDIS_TLS_HANDSHAKE_TIMEOUT=500ms\nFLEET_REDIS_MAX_IDLE_CONNS=42\nFLEET_REDIS_MAX_OPEN_CONNS=-7\nFLEET_REDIS_CONN_MAX_LIFETIME=0\nFLEET_REDIS_IDLE_TIMEOUT=500ms\nFLEET_REDIS_CONN_WAIT_TIMEOUT=5m\nFLEET_REDIS_WRITE_TIMEOUT=1h30m\nFLEET_REDIS_READ_TIMEOUT=0\nFLEET_REDIS_HOST_CACHE_ENABLED=false\nFLEET_REDIS_HOST_CACHE_TTL=5m\nFLEET_REDIS_LIVE_QUERY_SMALL_TARGET_THRESHOLD=-7\nFLEET_SERVER_ADDRESS=plain\nFLEET_SERVER_CERT=with space\nFLEET_SERVER_KEY=yes\nFLEET_SERVER_TLS=false\nFLEET_SERVER_TLS_COMPATIBILITY=modern\nFLEET_SERVER_URL_PREFIX=-dash\nFLEET_SERVER_KEEPALIVE=true\nFLEET_SERVER_WEBSOCKETS_ALLOW_UNSAFE_ORIGIN=false\nFLEET_SERVER_FREQUENT_CLEANUPS_ENABLED=true\nFLEET_SERVER_FORCE_H2C=false\nFLEET_SERVER_PRIVATE_KEY=s3cret: #pass\nFLEET_SERVER_PRIVATE_KEY_ARN=a: b\nFLEET_SERVER_PRIVATE_KEY_REGION=-dash\nFLEET_SERVER_PRIVATE_KEY_STS_ASSUME_ROLE_ARN=x #y\nFLEET_SERVER_PRIVATE_KEY_STS_EXTERNAL_ID=plain\nFLEET_SERVER_VPP_VERIFY_TIMEOUT=500ms\nFLEET_SERVER_VPP_VERIFY_REQUEST_DELAY=5m\nFLEET_SERVER_CLEANUP_DIST_TARGETS_AGE=1h30m\nFLEET_SERVER_MAX_INSTALLER_SIZE=1024\nFLEET_SERVER_TRUSTED_PROXIES=-dash\nFLEET_SERVER_GZIP_RESPONSES=true\nFLEET_SERVER_DEFAULT_MAX_REQUEST_BODY_SIZE=500 KB\nFLEET_SERVER_ALLOW_PRIVATE_NETWORK_INTEGRATIONS=true\nFLEET_SERVER_BYPASS_NETWORK_BLOCKING=false\nFLEET_AUTH_SSO_SESSION_VALIDITY_PERIOD=5m\nFLEET_AUTH_BCRYPT_COST=-7\nFLEET_AUTH_SALT_KEY_SIZE=42\nFLEET_AUTH_REQUIRE_HTTP_MESSAGE_SIGNATURE=false\nFLEET_AUTH_SSO_RATE_LIMIT_PER_MINUTE=42\nFLEET_APP_ENABLE_SCHEDULED_QUERY_STATS=true\nFLEET_APP_TOKEN_KEY_SIZE=-7\nFLEET_APP_INVITE_TOKEN_VALIDITY_PERIOD=0\nFLEET_SESSION_KEY_SIZE=42\nFLEET_SESSION_DURATION=1h30m\nFLEET_OSQUERY_NODE_KEY_SIZE=42\nFLEET_OSQUERY_HOST_IDENTIFIER=provided\nFLEET_OSQUERY_ENROLL_COOLDOWN=0\nFLEET_OSQUERY_STATUS_LOG_PLUGIN=filesystem\nFLEET_OSQUERY_RESULT_LOG_PLUGIN=filesystem\nFLEET_OSQUERY_LABEL_UPDATE_INTERVAL=1h30m\nFLEET_OSQUERY_POLICY_UPDATE_INTERVAL=0\nFLEET_OSQUERY_DETAIL_UPDATE_INTERVAL=500ms\nFLEET_OSQUERY_MAX_JITTER_PERCENT=42\nFLEET_OSQUERY_ENABLE_ASYNC_HOST_PROCESSING=yes\nFLEET_OSQUERY_ASYNC_HOST_COLLECT_INTERVAL=123\nFLEET_OSQUERY_ASYNC_HOST_COLLECT_MAX_JITTER_PERCENT=-7\nFLEET_OSQUERY_ASYNC_HOST_COLLECT_LOCK_TIMEOUT=-dash\nFLEET_OSQUERY_ASYNC_HOST_COLLECT_LOG_STATS_INTERVAL=1h30m\nFLEET_OSQUERY_ASYNC_HOST_INSERT_BATCH=42\nFLEET_OSQUERY_ASYNC_HOST_DELETE_BATCH=-7\nFLEET_OSQUERY_ASYNC_HOST_UPDATE_BATCH=42\nFLEET_OSQUERY_ASYNC_HOST_REDIS_POP_COUNT=-7\nFLEET_OSQUERY_ASYNC_HOST_REDIS_SCAN_KEYS_COUNT=42\nFLEET_OSQUERY_MIN_SOFTWARE_LAST_OPENED_AT_DIFF=500ms\nFLEET_OSQUERY_MAX_LOG_WRITE_BODY_SIZE=10GiB\nFLEET_OSQUERY_MAX_DISTRIBUTED_WRITE_BODY_SIZE=500 KB\nFLEET_OSQUERY_ALLOW_BODY_AUTH_FALLBACK=true\nFLEET_ACTIVITY_ENABLE_AUDIT_LOG=true\nFLEET_ACTIVITY_AUDIT_LOG_PLUGIN=filesystem\nFLEET_LOGGING_DEBUG=true\nFLEET_LOGGING_JSON=false\nFLEET_LOGGING_DISABLE_BANNER=true\nFLEET_LOGGING_ERROR_RETENTION_PERIOD=500ms\nFLEET_LOGGING_TRACING_ENABLED=true\nFLEET_LOGGING_TRACING_TYPE=-dash\nFLEET_LOGGING_OTEL_LOGS_ENABLED=true\nFLEET_LOGGING_ENABLE_TOPICS=plain\nFLEET_LOGGING_DISABLE_TOPICS=with space\nFLEET_LICENSE_KEY=s3cret: #pass\nFLEET_LICENSE_ENFORCE_HOST_LIMIT=false",
+      "errors": [],
+      "flags": "--mysql_protocol=plain\n--mysql_address=with space\n--mysql_username=yes\n--mysql_password=s3cret: #pass\n--mysql_password_path=a: b\n--mysql_database=-dash\n--mysql_tls_cert=x #y\n--mysql_tls_key=plain\n--mysql_tls_ca=with space\n--mysql_tls_server_name=yes\n--mysql_tls_config=123\n--mysql_max_open_conns=-7\n--mysql_max_idle_conns=42\n--mysql_conn_max_lifetime=-7\n--mysql_sql_mode=plain\n--mysql_region=with space\n--mysql_sts_assume_role_arn=yes\n--mysql_sts_external_id=123\n--mysql_read_replica_protocol=plain\n--mysql_read_replica_address=with space\n--mysql_read_replica_username=yes\n--mysql_read_replica_password=s3cret: #pass\n--mysql_read_replica_password_path=a: b\n--mysql_read_replica_database=-dash\n--mysql_read_replica_tls_cert=x #y\n--mysql_read_replica_tls_key=plain\n--mysql_read_replica_tls_ca=with space\n--mysql_read_replica_tls_server_name=yes\n--mysql_read_replica_tls_config=123\n--mysql_read_replica_max_open_conns=-7\n--mysql_read_replica_max_idle_conns=42\n--mysql_read_replica_conn_max_lifetime=-7\n--mysql_read_replica_sql_mode=plain\n--mysql_read_replica_region=with space\n--mysql_read_replica_sts_assume_role_arn=yes\n--mysql_read_replica_sts_external_id=123\n--redis_address=plain\n--redis_username=with space\n--redis_password=s3cret: #pass\n--redis_database=-7\n--redis_use_tls=true\n--redis_region=-dash\n--redis_cache_name=x #y\n--redis_sts_assume_role_arn=plain\n--redis_sts_external_id=with space\n--redis_duplicate_results=false\n--redis_connect_timeout=0\n--redis_keep_alive=500ms\n--redis_connect_retry_attempts=42\n--redis_cluster_follow_redirections=false\n--redis_cluster_read_from_replica=true\n--redis_tls_cert=with space\n--redis_tls_key=yes\n--redis_tls_ca=123\n--redis_tls_server_name=a: b\n--redis_tls_handshake_timeout=500ms\n--redis_max_idle_conns=42\n--redis_max_open_conns=-7\n--redis_conn_max_lifetime=0\n--redis_idle_timeout=500ms\n--redis_conn_wait_timeout=5m\n--redis_write_timeout=1h30m\n--redis_read_timeout=0\n--redis_host_cache_enabled=false\n--redis_host_cache_ttl=5m\n--redis_live_query_small_target_threshold=-7\n--server_address=plain\n--server_cert=with space\n--server_key=yes\n--server_tls=false\n--server_tls_compatibility=modern\n--server_url_prefix=-dash\n--server_keepalive=true\n--server_websockets_allow_unsafe_origin=false\n--server_frequent_cleanups_enabled=true\n--server_force_h2c=false\n--server_private_key=s3cret: #pass\n--server_private_key_arn=a: b\n--server_private_key_region=-dash\n--server_private_key_sts_assume_role_arn=x #y\n--server_private_key_sts_external_id=plain\n--server_vpp_verify_timeout=500ms\n--server_vpp_verify_request_delay=5m\n--server_cleanup_dist_targets_age=1h30m\n--server_max_installer_size=1024\n--server_trusted_proxies=-dash\n--server_gzip_responses=true\n--server_default_max_request_body_size=500 KB\n--server_allow_private_network_integrations=true\n--server_bypass_network_blocking=false\n--auth_sso_session_validity_period=5m\n--auth_bcrypt_cost=-7\n--auth_salt_key_size=42\n--auth_require_http_message_signature=false\n--auth_sso_rate_limit_per_minute=42\n--app_enable_scheduled_query_stats=true\n--app_token_key_size=-7\n--app_invite_token_validity_period=0\n--session_key_size=42\n--session_duration=1h30m\n--osquery_node_key_size=42\n--osquery_host_identifier=provided\n--osquery_enroll_cooldown=0\n--osquery_status_log_plugin=filesystem\n--osquery_result_log_plugin=filesystem\n--osquery_label_update_interval=1h30m\n--osquery_policy_update_interval=0\n--osquery_detail_update_interval=500ms\n--osquery_max_jitter_percent=42\n--osquery_enable_async_host_processing=yes\n--osquery_async_host_collect_interval=123\n--osquery_async_host_collect_max_jitter_percent=-7\n--osquery_async_host_collect_lock_timeout=-dash\n--osquery_async_host_collect_log_stats_interval=1h30m\n--osquery_async_host_insert_batch=42\n--osquery_async_host_delete_batch=-7\n--osquery_async_host_update_batch=42\n--osquery_async_host_redis_pop_count=-7\n--osquery_async_host_redis_scan_keys_count=42\n--osquery_min_software_last_opened_at_diff=500ms\n--osquery_max_log_write_body_size=10GiB\n--osquery_max_distributed_write_body_size=500 KB\n--osquery_allow_body_auth_fallback=true\n--activity_enable_audit_log=true\n--activity_audit_log_plugin=filesystem\n--logging_debug=true\n--logging_json=false\n--logging_disable_banner=true\n--logging_error_retention_period=500ms\n--logging_tracing_enabled=true\n--logging_tracing_type=-dash\n--logging_otel_logs_enabled=true\n--logging_enable_topics=plain\n--logging_disable_topics=with space\n--license_key=s3cret: #pass\n--license_enforce_host_limit=false",
+      "yaml": "mysql:\n  protocol: plain\n  address: with space\n  username: \"yes\"\n  password: \"s3cret: #pass\"\n  password_path: \"a: b\"\n  database: \"-dash\"\n  tls_cert: \"x #y\"\n  tls_key: plain\n  tls_ca: with space\n  tls_server_name: \"yes\"\n  tls_config: \"123\"\n  max_open_conns: -7\n  max_idle_conns: 42\n  conn_max_lifetime: -7\n  sql_mode: plain\n  region: with space\n  sts_assume_role_arn: \"yes\"\n  sts_external_id: \"123\"\n\nmysql_read_replica:\n  protocol: plain\n  address: with space\n  username: \"yes\"\n  password: \"s3cret: #pass\"\n  password_path: \"a: b\"\n  database: \"-dash\"\n  tls_cert: \"x #y\"\n  tls_key: plain\n  tls_ca: with space\n  tls_server_name: \"yes\"\n  tls_config: \"123\"\n  max_open_conns: -7\n  max_idle_conns: 42\n  conn_max_lifetime: -7\n  sql_mode: plain\n  region: with space\n  sts_assume_role_arn: \"yes\"\n  sts_external_id: \"123\"\n\nredis:\n  address: plain\n  username: with space\n  password: \"s3cret: #pass\"\n  database: -7\n  use_tls: true\n  region: \"-dash\"\n  cache_name: \"x #y\"\n  sts_assume_role_arn: plain\n  sts_external_id: with space\n  duplicate_results: false\n  connect_timeout: \"0\"\n  keep_alive: 500ms\n  connect_retry_attempts: 42\n  cluster_follow_redirections: false\n  cluster_read_from_replica: true\n  tls_cert: with space\n  tls_key: \"yes\"\n  tls_ca: \"123\"\n  tls_server_name: \"a: b\"\n  tls_handshake_timeout: 500ms\n  max_idle_conns: 42\n  max_open_conns: -7\n  conn_max_lifetime: \"0\"\n  idle_timeout: 500ms\n  conn_wait_timeout: 5m\n  write_timeout: 1h30m\n  read_timeout: \"0\"\n  host_cache_enabled: false\n  host_cache_ttl: 5m\n  live_query_small_target_threshold: -7\n\nserver:\n  address: plain\n  cert: with space\n  key: \"yes\"\n  tls: false\n  tls_compatibility: modern\n  url_prefix: \"-dash\"\n  keepalive: true\n  websockets_allow_unsafe_origin: false\n  frequent_cleanups_enabled: true\n  force_h2c: false\n  private_key: \"s3cret: #pass\"\n  private_key_arn: \"a: b\"\n  private_key_region: \"-dash\"\n  private_key_sts_assume_role_arn: \"x #y\"\n  private_key_sts_external_id: plain\n  vpp_verify_timeout: 500ms\n  vpp_verify_request_delay: 5m\n  cleanup_dist_targets_age: 1h30m\n  max_installer_size: \"1024\"\n  trusted_proxies: \"-dash\"\n  gzip_responses: true\n  default_max_request_body_size: 500 KB\n  allow_private_network_integrations: true\n  bypass_network_blocking: false\n\nauth:\n  sso_session_validity_period: 5m\n  bcrypt_cost: -7\n  salt_key_size: 42\n  require_http_message_signature: false\n  sso_rate_limit_per_minute: 42\n\napp:\n  enable_scheduled_query_stats: true\n  token_key_size: -7\n  invite_token_validity_period: \"0\"\n\nsession:\n  key_size: 42\n  duration: 1h30m\n\nosquery:\n  node_key_size: 42\n  host_identifier: provided\n  enroll_cooldown: \"0\"\n  status_log_plugin: filesystem\n  result_log_plugin: filesystem\n  label_update_interval: 1h30m\n  policy_update_interval: \"0\"\n  detail_update_interval: 500ms\n  max_jitter_percent: 42\n  enable_async_host_processing: \"yes\"\n  async_host_collect_interval: \"123\"\n  async_host_collect_max_jitter_percent: -7\n  async_host_collect_lock_timeout: \"-dash\"\n  async_host_collect_log_stats_interval: 1h30m\n  async_host_insert_batch: 42\n  async_host_delete_batch: -7\n  async_host_update_batch: 42\n  async_host_redis_pop_count: -7\n  async_host_redis_scan_keys_count: 42\n  min_software_last_opened_at_diff: 500ms\n  max_log_write_body_size: 10GiB\n  max_distributed_write_body_size: 500 KB\n  allow_body_auth_fallback: true\n\nactivity:\n  enable_audit_log: true\n  audit_log_plugin: filesystem\n\nlogging:\n  debug: true\n  json: false\n  disable_banner: true\n  error_retention_period: 500ms\n  tracing_enabled: true\n  tracing_type: \"-dash\"\n  otel_logs_enabled: true\n  enable_topics: plain\n  disable_topics: with space\n\nlicense:\n  key: \"s3cret: #pass\"\n  enforce_host_limit: false\n\n# ----- Advanced: appended as-is, not validated or merged with the above -----\nfoo: bar\n"
+    },
+    "extra_yaml": "foo: bar",
+    "name": "all sections plus extra",
+    "values": {
+      "activity": {
+        "audit_log_plugin": "filesystem",
+        "enable_audit_log": "true"
+      },
+      "app": {
+        "enable_scheduled_query_stats": "true",
+        "invite_token_validity_period": "0",
+        "token_key_size": "-7"
+      },
+      "auth": {
+        "bcrypt_cost": "-7",
+        "require_http_message_signature": "false",
+        "salt_key_size": "42",
+        "sso_rate_limit_per_minute": "42",
+        "sso_session_validity_period": "5m"
+      },
+      "license": {
+        "enforce_host_limit": "false",
+        "key": "s3cret: #pass"
+      },
+      "logging": {
+        "debug": "true",
+        "disable_banner": "true",
+        "disable_topics": "with space",
+        "enable_topics": "plain",
+        "error_retention_period": "500ms",
+        "json": "false",
+        "otel_logs_enabled": "true",
+        "tracing_enabled": "true",
+        "tracing_type": "-dash"
+      },
+      "mysql": {
+        "address": "with space",
+        "conn_max_lifetime": "-7",
+        "database": "-dash",
+        "max_idle_conns": "42",
+        "max_open_conns": "-7",
+        "password": "s3cret: #pass",
+        "password_path": "a: b",
+        "protocol": "plain",
+        "region": "with space",
+        "sql_mode": "plain",
+        "sts_assume_role_arn": "yes",
+        "sts_external_id": "123",
+        "tls_ca": "with space",
+        "tls_cert": "x #y",
+        "tls_config": "123",
+        "tls_key": "plain",
+        "tls_server_name": "yes",
+        "username": "yes"
+      },
+      "mysql_read_replica": {
+        "address": "with space",
+        "conn_max_lifetime": "-7",
+        "database": "-dash",
+        "max_idle_conns": "42",
+        "max_open_conns": "-7",
+        "password": "s3cret: #pass",
+        "password_path": "a: b",
+        "protocol": "plain",
+        "region": "with space",
+        "sql_mode": "plain",
+        "sts_assume_role_arn": "yes",
+        "sts_external_id": "123",
+        "tls_ca": "with space",
+        "tls_cert": "x #y",
+        "tls_config": "123",
+        "tls_key": "plain",
+        "tls_server_name": "yes",
+        "username": "yes"
+      },
+      "osquery": {
+        "allow_body_auth_fallback": "true",
+        "async_host_collect_interval": "123",
+        "async_host_collect_lock_timeout": "-dash",
+        "async_host_collect_log_stats_interval": "1h30m",
+        "async_host_collect_max_jitter_percent": "-7",
+        "async_host_delete_batch": "-7",
+        "async_host_insert_batch": "42",
+        "async_host_redis_pop_count": "-7",
+        "async_host_redis_scan_keys_count": "42",
+        "async_host_update_batch": "42",
+        "detail_update_interval": "500ms",
+        "enable_async_host_processing": "yes",
+        "enroll_cooldown": "0",
+        "host_identifier": "provided",
+        "label_update_interval": "1h30m",
+        "max_distributed_write_body_size": "500 KB",
+        "max_jitter_percent": "42",
+        "max_log_write_body_size": "10GiB",
+        "min_software_last_opened_at_diff": "500ms",
+        "node_key_size": "42",
+        "policy_update_interval": "0",
+        "result_log_plugin": "filesystem",
+        "status_log_plugin": "filesystem"
+      },
+      "redis": {
+        "address": "plain",
+        "cache_name": "x #y",
+        "cluster_follow_redirections": "false",
+        "cluster_read_from_replica": "true",
+        "conn_max_lifetime": "0",
+        "conn_wait_timeout": "5m",
+        "connect_retry_attempts": "42",
+        "connect_timeout": "0",
+        "database": "-7",
+        "duplicate_results": "false",
+        "host_cache_enabled": "false",
+        "host_cache_ttl": "5m",
+        "idle_timeout": "500ms",
+        "keep_alive": "500ms",
+        "live_query_small_target_threshold": "-7",
+        "max_idle_conns": "42",
+        "max_open_conns": "-7",
+        "password": "s3cret: #pass",
+        "read_timeout": "0",
+        "region": "-dash",
+        "sts_assume_role_arn": "plain",
+        "sts_external_id": "with space",
+        "tls_ca": "123",
+        "tls_cert": "with space",
+        "tls_handshake_timeout": "500ms",
+        "tls_key": "yes",
+        "tls_server_name": "a: b",
+        "use_tls": "true",
+        "username": "with space",
+        "write_timeout": "1h30m"
+      },
+      "server": {
+        "address": "plain",
+        "allow_private_network_integrations": "true",
+        "bypass_network_blocking": "false",
+        "cert": "with space",
+        "cleanup_dist_targets_age": "1h30m",
+        "default_max_request_body_size": "500 KB",
+        "force_h2c": "false",
+        "frequent_cleanups_enabled": "true",
+        "gzip_responses": "true",
+        "keepalive": "true",
+        "key": "yes",
+        "max_installer_size": "1024",
+        "private_key": "s3cret: #pass",
+        "private_key_arn": "a: b",
+        "private_key_region": "-dash",
+        "private_key_sts_assume_role_arn": "x #y",
+        "private_key_sts_external_id": "plain",
+        "tls": "false",
+        "tls_compatibility": "modern",
+        "trusted_proxies": "-dash",
+        "url_prefix": "-dash",
+        "vpp_verify_request_delay": "5m",
+        "vpp_verify_timeout": "500ms",
+        "websockets_allow_unsafe_origin": "false"
+      },
+      "session": {
+        "duration": "1h30m",
+        "key_size": "42"
+      }
+    }
+  },
+  {
+    "expected": {
+      "env": "FLEET_MYSQL_ADDRESS=db:3306",
+      "errors": [],
+      "flags": "--mysql_address=db:3306",
+      "yaml": "mysql:\n  address: db:3306\n"
+    },
+    "extra_yaml": "",
+    "name": "unknown keys ignored",
+    "values": {
+      "ghost": { "a": "b" },
+      "mysql": {
+        "address": "db:3306",
+        "nope": "1"
+      }
+    }
+  }
+]

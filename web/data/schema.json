@@ -1,0 +1,1312 @@
+[
+  {
+    "description": "Primary database connection Fleet uses for everything except caching and pub/sub.",
+    "fields": [
+      {
+        "default": "tcp",
+        "help": "Network protocol used to reach the MySQL server (e.g. tcp, unix).",
+        "key": "protocol",
+        "label": "Protocol",
+        "type": "string",
+        "yaml_key": "protocol"
+      },
+      {
+        "default": "localhost:3306",
+        "help": "Hostname and port of the MySQL server. If this is an RDS endpoint and region is set instead of a password, IAM authentication is used automatically.",
+        "key": "address",
+        "label": "Address",
+        "type": "string",
+        "yaml_key": "address"
+      },
+      {
+        "default": "fleet",
+        "help": "Username Fleet uses to connect to MySQL.",
+        "key": "username",
+        "label": "Username",
+        "type": "string",
+        "yaml_key": "username"
+      },
+      {
+        "default": "",
+        "help": "Password Fleet uses to connect to MySQL. Prefer password_path or an environment variable in production.",
+        "key": "password",
+        "label": "Password",
+        "type": "password",
+        "yaml_key": "password"
+      },
+      {
+        "default": "",
+        "help": "Path to a file containing the MySQL password, as an alternative to setting password directly.",
+        "key": "password_path",
+        "label": "Password path",
+        "type": "string",
+        "yaml_key": "password_path"
+      },
+      {
+        "default": "fleet",
+        "help": "Name of the MySQL database Fleet uses.",
+        "key": "database",
+        "label": "Database",
+        "type": "string",
+        "yaml_key": "database"
+      },
+      {
+        "default": "",
+        "help": "Path to a PEM-encoded client certificate for MySQL TLS authentication.",
+        "key": "tls_cert",
+        "label": "TLS certificate path",
+        "type": "string",
+        "yaml_key": "tls_cert"
+      },
+      {
+        "default": "",
+        "help": "Path to a PEM-encoded client private key for MySQL TLS authentication.",
+        "key": "tls_key",
+        "label": "TLS key path",
+        "type": "string",
+        "yaml_key": "tls_key"
+      },
+      {
+        "default": "",
+        "help": "Path to a PEM-encoded CA certificate used to verify the MySQL server.",
+        "key": "tls_ca",
+        "label": "TLS CA path",
+        "type": "string",
+        "yaml_key": "tls_ca"
+      },
+      {
+        "default": "",
+        "help": "Server name or IP address used by the client certificate.",
+        "key": "tls_server_name",
+        "label": "TLS server name",
+        "type": "string",
+        "yaml_key": "tls_server_name"
+      },
+      {
+        "default": "",
+        "help": "TLS value for the MySQL DSN: true, false, skip-verify, or the CN of the certificate.",
+        "key": "tls_config",
+        "label": "TLS config",
+        "type": "string",
+        "yaml_key": "tls_config"
+      },
+      {
+        "default": 50,
+        "help": "Maximum open connections per Fleet server instance. Keep the total across all instances under your database's connection limit.",
+        "key": "max_open_conns",
+        "label": "Max open connections",
+        "type": "integer",
+        "yaml_key": "max_open_conns"
+      },
+      {
+        "default": 50,
+        "help": "Maximum idle connections; should be less than or equal to max open connections.",
+        "key": "max_idle_conns",
+        "label": "Max idle connections",
+        "type": "integer",
+        "yaml_key": "max_idle_conns"
+      },
+      {
+        "default": 0,
+        "help": "Maximum time in seconds a connection may be reused. 0 means unlimited. This is a plain number of seconds, not a duration string like \"5m\".",
+        "key": "conn_max_lifetime",
+        "label": "Connection max lifetime (seconds)",
+        "type": "integer",
+        "yaml_key": "conn_max_lifetime"
+      },
+      {
+        "default": "",
+        "help": "Sets the MySQL session sql_mode. Leave blank unless you know you need this.",
+        "key": "sql_mode",
+        "label": "SQL mode",
+        "type": "string",
+        "yaml_key": "sql_mode"
+      },
+      {
+        "default": "",
+        "help": "AWS region for RDS IAM authentication. Only takes effect when password and password_path are unset.",
+        "key": "region",
+        "label": "AWS region",
+        "type": "string",
+        "yaml_key": "region"
+      },
+      {
+        "default": "",
+        "help": "ARN of an AWS STS role to assume for IAM authentication.",
+        "key": "sts_assume_role_arn",
+        "label": "STS assume role ARN",
+        "type": "string",
+        "yaml_key": "sts_assume_role_arn"
+      },
+      {
+        "default": "",
+        "help": "STS External ID, used together with STS assume role ARN.",
+        "key": "sts_external_id",
+        "label": "STS external ID",
+        "type": "string",
+        "yaml_key": "sts_external_id"
+      }
+    ],
+    "flag_prefix": "mysql",
+    "key": "mysql",
+    "title": "MySQL",
+    "yaml_key": "mysql"
+  },
+  {
+    "description": "Fully independent from the primary MySQL section — nothing is inherited. Only set this up if you have a dedicated read replica.",
+    "fields": [
+      {
+        "default": "tcp",
+        "help": "Network protocol used to reach the MySQL server (e.g. tcp, unix).",
+        "key": "protocol",
+        "label": "Protocol",
+        "type": "string",
+        "yaml_key": "protocol"
+      },
+      {
+        "default": "",
+        "help": "Hostname and port of the read replica. There is no default — this must be set explicitly for Fleet to use a read replica. If replica addresses change under auto-scaling, also set a non-zero connection max lifetime.",
+        "key": "address",
+        "label": "Address",
+        "type": "string",
+        "yaml_key": "address"
+      },
+      {
+        "default": "fleet",
+        "help": "Username Fleet uses to connect to MySQL.",
+        "key": "username",
+        "label": "Username",
+        "type": "string",
+        "yaml_key": "username"
+      },
+      {
+        "default": "",
+        "help": "Password Fleet uses to connect to MySQL. Prefer password_path or an environment variable in production.",
+        "key": "password",
+        "label": "Password",
+        "type": "password",
+        "yaml_key": "password"
+      },
+      {
+        "default": "",
+        "help": "Path to a file containing the MySQL password, as an alternative to setting password directly.",
+        "key": "password_path",
+        "label": "Password path",
+        "type": "string",
+        "yaml_key": "password_path"
+      },
+      {
+        "default": "fleet",
+        "help": "Name of the MySQL database Fleet uses.",
+        "key": "database",
+        "label": "Database",
+        "type": "string",
+        "yaml_key": "database"
+      },
+      {
+        "default": "",
+        "help": "Path to a PEM-encoded client certificate for MySQL TLS authentication.",
+        "key": "tls_cert",
+        "label": "TLS certificate path",
+        "type": "string",
+        "yaml_key": "tls_cert"
+      },
+      {
+        "default": "",
+        "help": "Path to a PEM-encoded client private key for MySQL TLS authentication.",
+        "key": "tls_key",
+        "label": "TLS key path",
+        "type": "string",
+        "yaml_key": "tls_key"
+      },
+      {
+        "default": "",
+        "help": "Path to a PEM-encoded CA certificate used to verify the MySQL server.",
+        "key": "tls_ca",
+        "label": "TLS CA path",
+        "type": "string",
+        "yaml_key": "tls_ca"
+      },
+      {
+        "default": "",
+        "help": "Server name or IP address used by the client certificate.",
+        "key": "tls_server_name",
+        "label": "TLS server name",
+        "type": "string",
+        "yaml_key": "tls_server_name"
+      },
+      {
+        "default": "",
+        "help": "TLS value for the MySQL DSN: true, false, skip-verify, or the CN of the certificate.",
+        "key": "tls_config",
+        "label": "TLS config",
+        "type": "string",
+        "yaml_key": "tls_config"
+      },
+      {
+        "default": 50,
+        "help": "Maximum open connections per Fleet server instance. Keep the total across all instances under your database's connection limit.",
+        "key": "max_open_conns",
+        "label": "Max open connections",
+        "type": "integer",
+        "yaml_key": "max_open_conns"
+      },
+      {
+        "default": 50,
+        "help": "Maximum idle connections; should be less than or equal to max open connections.",
+        "key": "max_idle_conns",
+        "label": "Max idle connections",
+        "type": "integer",
+        "yaml_key": "max_idle_conns"
+      },
+      {
+        "default": 0,
+        "help": "Maximum time in seconds a connection may be reused. 0 means unlimited. This is a plain number of seconds, not a duration string like \"5m\".",
+        "key": "conn_max_lifetime",
+        "label": "Connection max lifetime (seconds)",
+        "type": "integer",
+        "yaml_key": "conn_max_lifetime"
+      },
+      {
+        "default": "",
+        "help": "Sets the MySQL session sql_mode. Leave blank unless you know you need this.",
+        "key": "sql_mode",
+        "label": "SQL mode",
+        "type": "string",
+        "yaml_key": "sql_mode"
+      },
+      {
+        "default": "",
+        "help": "AWS region for RDS IAM authentication. Only takes effect when password and password_path are unset.",
+        "key": "region",
+        "label": "AWS region",
+        "type": "string",
+        "yaml_key": "region"
+      },
+      {
+        "default": "",
+        "help": "ARN of an AWS STS role to assume for IAM authentication.",
+        "key": "sts_assume_role_arn",
+        "label": "STS assume role ARN",
+        "type": "string",
+        "yaml_key": "sts_assume_role_arn"
+      },
+      {
+        "default": "",
+        "help": "STS External ID, used together with STS assume role ARN.",
+        "key": "sts_external_id",
+        "label": "STS external ID",
+        "type": "string",
+        "yaml_key": "sts_external_id"
+      }
+    ],
+    "flag_prefix": "mysql_read_replica",
+    "key": "mysql_read_replica",
+    "title": "MySQL read replica",
+    "yaml_key": "mysql_read_replica"
+  },
+  {
+    "description": "Caching, pub/sub, and live query result delivery.",
+    "fields": [
+      {
+        "default": "localhost:6379",
+        "help": "Hostname and port of the Redis server. If this is an AWS ElastiCache endpoint with no password, IAM authentication is attempted when region and cluster are also set.",
+        "key": "address",
+        "label": "Address",
+        "type": "string",
+        "yaml_key": "address"
+      },
+      {
+        "default": "",
+        "help": "Username for the Redis connection.",
+        "key": "username",
+        "label": "Username",
+        "type": "string",
+        "yaml_key": "username"
+      },
+      {
+        "default": "",
+        "help": "Password for the Redis connection.",
+        "key": "password",
+        "label": "Password",
+        "type": "password",
+        "yaml_key": "password"
+      },
+      {
+        "default": 0,
+        "help": "Redis logical database number to use.",
+        "key": "database",
+        "label": "Database",
+        "type": "integer",
+        "yaml_key": "database"
+      },
+      {
+        "default": false,
+        "help": "Connect to Redis over TLS.",
+        "key": "use_tls",
+        "label": "Use TLS",
+        "type": "boolean",
+        "yaml_key": "use_tls"
+      },
+      {
+        "default": "",
+        "help": "AWS region for ElastiCache IAM authentication; only used when password is unset.",
+        "key": "region",
+        "label": "AWS region",
+        "type": "string",
+        "yaml_key": "region"
+      },
+      {
+        "default": "",
+        "help": "ElastiCache cache name for IAM authentication.",
+        "key": "cache_name",
+        "label": "Cache name",
+        "type": "string",
+        "yaml_key": "cache_name"
+      },
+      {
+        "default": "",
+        "help": "ARN of an AWS STS role to assume for IAM authentication.",
+        "key": "sts_assume_role_arn",
+        "label": "STS assume role ARN",
+        "type": "string",
+        "yaml_key": "sts_assume_role_arn"
+      },
+      {
+        "default": "",
+        "help": "STS External ID, used together with STS assume role ARN.",
+        "key": "sts_external_id",
+        "label": "STS external ID",
+        "type": "string",
+        "yaml_key": "sts_external_id"
+      },
+      {
+        "default": false,
+        "help": "Duplicate live query results to a second Redis channel (LQDuplicate) — useful for shipping results elsewhere in near real-time.",
+        "key": "duplicate_results",
+        "label": "Duplicate results",
+        "type": "boolean",
+        "yaml_key": "duplicate_results"
+      },
+      {
+        "default": "5s",
+        "help": "Timeout when establishing a connection to Redis.",
+        "key": "connect_timeout",
+        "label": "Connect timeout",
+        "type": "duration",
+        "yaml_key": "connect_timeout"
+      },
+      {
+        "default": "10s",
+        "help": "Interval between keep-alive probes.",
+        "key": "keep_alive",
+        "label": "Keep alive",
+        "type": "duration",
+        "yaml_key": "keep_alive"
+      },
+      {
+        "default": 0,
+        "help": "Maximum attempts to retry a failed connection to a Redis node.",
+        "key": "connect_retry_attempts",
+        "label": "Connect retry attempts",
+        "type": "integer",
+        "yaml_key": "connect_retry_attempts"
+      },
+      {
+        "default": true,
+        "help": "Automatically follow Redis Cluster redirection errors. Ignored outside cluster mode.",
+        "key": "cluster_follow_redirections",
+        "label": "Cluster follow redirections",
+        "type": "boolean",
+        "yaml_key": "cluster_follow_redirections"
+      },
+      {
+        "default": false,
+        "help": "Prefer reading from a replica in Redis Cluster mode.",
+        "key": "cluster_read_from_replica",
+        "label": "Cluster read from replica",
+        "type": "boolean",
+        "yaml_key": "cluster_read_from_replica"
+      },
+      {
+        "default": "",
+        "help": "Path to a PEM-encoded client certificate.",
+        "key": "tls_cert",
+        "label": "TLS certificate path",
+        "type": "string",
+        "yaml_key": "tls_cert"
+      },
+      {
+        "default": "",
+        "help": "Path to a PEM-encoded client private key.",
+        "key": "tls_key",
+        "label": "TLS key path",
+        "type": "string",
+        "yaml_key": "tls_key"
+      },
+      {
+        "default": "",
+        "help": "Path to a PEM-encoded CA certificate.",
+        "key": "tls_ca",
+        "label": "TLS CA path",
+        "type": "string",
+        "yaml_key": "tls_ca"
+      },
+      {
+        "default": "",
+        "help": "Server name or IP address used by the client certificate.",
+        "key": "tls_server_name",
+        "label": "TLS server name",
+        "type": "string",
+        "yaml_key": "tls_server_name"
+      },
+      {
+        "default": "10s",
+        "help": "Timeout for the Redis TLS handshake. 0 means no timeout.",
+        "key": "tls_handshake_timeout",
+        "label": "TLS handshake timeout",
+        "type": "duration",
+        "yaml_key": "tls_handshake_timeout"
+      },
+      {
+        "default": 3,
+        "help": "Maximum idle connections; should be less than or equal to max open connections.",
+        "key": "max_idle_conns",
+        "label": "Max idle connections",
+        "type": "integer",
+        "yaml_key": "max_idle_conns"
+      },
+      {
+        "default": 0,
+        "help": "Maximum open connections. 0 means no limit.",
+        "key": "max_open_conns",
+        "label": "Max open connections",
+        "type": "integer",
+        "yaml_key": "max_open_conns"
+      },
+      {
+        "default": "0",
+        "help": "Maximum time a connection may be reused. 0 means unlimited.",
+        "key": "conn_max_lifetime",
+        "label": "Connection max lifetime",
+        "type": "duration",
+        "yaml_key": "conn_max_lifetime"
+      },
+      {
+        "default": "240s",
+        "help": "Maximum time a connection may stay idle. 0 means unlimited.",
+        "key": "idle_timeout",
+        "label": "Idle timeout",
+        "type": "duration",
+        "yaml_key": "idle_timeout"
+      },
+      {
+        "default": "0",
+        "help": "Maximum time to wait for a connection when the pool is exhausted. 0 means no wait.",
+        "key": "conn_wait_timeout",
+        "label": "Connection wait timeout",
+        "type": "duration",
+        "yaml_key": "conn_wait_timeout"
+      },
+      {
+        "default": "10s",
+        "help": "Maximum time to wait to send a command. 0 means no timeout.",
+        "key": "write_timeout",
+        "label": "Write timeout",
+        "type": "duration",
+        "yaml_key": "write_timeout"
+      },
+      {
+        "default": "10s",
+        "help": "Maximum time to wait to receive a response. 0 means no timeout.",
+        "key": "read_timeout",
+        "label": "Read timeout",
+        "type": "duration",
+        "yaml_key": "read_timeout"
+      },
+      {
+        "default": true,
+        "help": "Enables a Redis-backed cache in front of host lookups on the osquery/orbit auth paths, reducing MySQL load.",
+        "key": "host_cache_enabled",
+        "label": "Host cache enabled",
+        "type": "boolean",
+        "yaml_key": "host_cache_enabled"
+      },
+      {
+        "default": "180s",
+        "help": "Base TTL for cached host lookup entries (jittered ±10%). Must be greater than 0 when host cache is enabled.",
+        "key": "host_cache_ttl",
+        "label": "Host cache TTL",
+        "type": "duration",
+        "yaml_key": "host_cache_ttl"
+      },
+      {
+        "default": 1000,
+        "help": "Maximum targeted hosts for a live query to use a per-host index instead of a fleet-wide bitfield. 0 disables the per-host index.",
+        "key": "live_query_small_target_threshold",
+        "label": "Live query small target threshold",
+        "type": "integer",
+        "yaml_key": "live_query_small_target_threshold"
+      }
+    ],
+    "flag_prefix": "redis",
+    "key": "redis",
+    "title": "Redis",
+    "yaml_key": "redis"
+  },
+  {
+    "description": "Core webserver behavior: address, TLS, request limits, and the private key used for MDM and sensitive-value encryption.",
+    "fields": [
+      {
+        "default": "0.0.0.0:8080",
+        "help": "Address the Fleet webserver listens on.",
+        "key": "address",
+        "label": "Address",
+        "type": "string",
+        "yaml_key": "address"
+      },
+      {
+        "default": "./tools/osquery/fleet.crt",
+        "help": "Path to the TLS certificate used when terminating TLS.",
+        "key": "cert",
+        "label": "TLS certificate path",
+        "type": "string",
+        "yaml_key": "cert"
+      },
+      {
+        "default": "./tools/osquery/fleet.key",
+        "help": "Path to the TLS key used when terminating TLS.",
+        "key": "key",
+        "label": "TLS key path",
+        "type": "string",
+        "yaml_key": "key"
+      },
+      {
+        "default": true,
+        "help": "Whether the server should be served over TLS.",
+        "key": "tls",
+        "label": "Serve over TLS",
+        "type": "boolean",
+        "yaml_key": "tls"
+      },
+      {
+        "default": "intermediate",
+        "help": "TLS compatibility profile for client support (Mozilla OpSec definitions).",
+        "key": "tls_compatibility",
+        "label": "TLS compatibility",
+        "options": [
+          "modern",
+          "intermediate"
+        ],
+        "type": "select",
+        "yaml_key": "tls_compatibility"
+      },
+      {
+        "default": "",
+        "help": "URL path prefix for the Fleet API and frontend, e.g. /apps/fleet (no trailing slash). Other settings like fleetctl and osquery flagfiles may need updating too.",
+        "key": "url_prefix",
+        "label": "URL prefix",
+        "type": "string",
+        "yaml_key": "url_prefix"
+      },
+      {
+        "default": true,
+        "help": "Controls the server-side HTTP keep-alive property.",
+        "key": "keepalive",
+        "label": "Keepalive",
+        "type": "boolean",
+        "yaml_key": "keepalive"
+      },
+      {
+        "default": false,
+        "help": "Disables the websocket Origin header check. Useful behind a reverse proxy that rewrites Origin.",
+        "key": "websockets_allow_unsafe_origin",
+        "label": "Allow unsafe websocket origin",
+        "type": "boolean",
+        "yaml_key": "websockets_allow_unsafe_origin"
+      },
+      {
+        "default": false,
+        "help": "Enables more frequent cleanup of expired data.",
+        "key": "frequent_cleanups_enabled",
+        "label": "Frequent cleanups enabled",
+        "type": "boolean",
+        "yaml_key": "frequent_cleanups_enabled"
+      },
+      {
+        "default": false,
+        "help": "Force HTTP/2 without TLS. Ignored if TLS is enabled. Useful on some cloud providers with API gateway limitations (e.g. GCP Cloud Run).",
+        "key": "force_h2c",
+        "label": "Force H2C",
+        "type": "boolean",
+        "yaml_key": "force_h2c"
+      },
+      {
+        "default": "",
+        "help": "Enables Apple/Windows/Android MDM features and encrypts sensitive config values at rest. Must be at least 32 bytes — generate with `openssl rand -base64 32`. Cannot be set together with private key ARN.",
+        "key": "private_key",
+        "label": "Private key",
+        "type": "password",
+        "yaml_key": "private_key"
+      },
+      {
+        "default": "",
+        "help": "ARN of an AWS Secrets Manager secret containing the private key, instead of setting it directly.",
+        "key": "private_key_arn",
+        "label": "Private key ARN",
+        "type": "string",
+        "yaml_key": "private_key_arn"
+      },
+      {
+        "default": "",
+        "help": "AWS region for private key IAM authentication; only used when private key is unset.",
+        "key": "private_key_region",
+        "label": "Private key region",
+        "type": "string",
+        "yaml_key": "private_key_region"
+      },
+      {
+        "default": "",
+        "help": "ARN of an AWS STS role to assume when reading the private key secret.",
+        "key": "private_key_sts_assume_role_arn",
+        "label": "Private key STS assume role ARN",
+        "type": "string",
+        "yaml_key": "private_key_sts_assume_role_arn"
+      },
+      {
+        "default": "",
+        "help": "STS External ID, used together with private key STS assume role ARN.",
+        "key": "private_key_sts_external_id",
+        "label": "Private key STS external ID",
+        "type": "string",
+        "yaml_key": "private_key_sts_external_id"
+      },
+      {
+        "default": "10m",
+        "help": "Maximum time to wait for VPP app install verification.",
+        "key": "vpp_verify_timeout",
+        "label": "VPP verify timeout",
+        "type": "duration",
+        "yaml_key": "vpp_verify_timeout"
+      },
+      {
+        "default": "5s",
+        "help": "Delay between VPP install verification requests.",
+        "key": "vpp_verify_request_delay",
+        "label": "VPP verify request delay",
+        "type": "duration",
+        "yaml_key": "vpp_verify_request_delay"
+      },
+      {
+        "default": "24h",
+        "help": "Age after which completed live-query distributed targets are cleaned up.",
+        "key": "cleanup_dist_targets_age",
+        "label": "Cleanup distributed targets age",
+        "type": "duration",
+        "yaml_key": "cleanup_dist_targets_age"
+      },
+      {
+        "default": "10GiB",
+        "help": "Maximum size for software installer uploads. Accepts K/M/G/T (binary) or KB/MB/GB/TB (decimal) suffixes.",
+        "key": "max_installer_size",
+        "label": "Max installer size",
+        "type": "bytesize",
+        "yaml_key": "max_installer_size"
+      },
+      {
+        "default": "",
+        "help": "Strategy Fleet uses to resolve the client IP for rate limiting: none, a header name (header:x-real-ip), a hop count, or a comma-separated list of trusted IPs/CIDRs to skip in X-Forwarded-For.",
+        "key": "trusted_proxies",
+        "label": "Trusted proxies",
+        "type": "string",
+        "yaml_key": "trusted_proxies"
+      },
+      {
+        "default": false,
+        "help": "Gzip-compress responses for clients that indicate support.",
+        "key": "gzip_responses",
+        "label": "Gzip responses",
+        "type": "boolean",
+        "yaml_key": "gzip_responses"
+      },
+      {
+        "default": "1MiB",
+        "help": "Default max request body size for endpoints that don't set a higher limit of their own.",
+        "key": "default_max_request_body_size",
+        "label": "Default max request body size",
+        "type": "bytesize",
+        "yaml_key": "default_max_request_body_size"
+      },
+      {
+        "default": false,
+        "help": "Allow outbound integration requests to reach private (RFC1918) network addresses. Loopback and cloud metadata addresses are always blocked.",
+        "key": "allow_private_network_integrations",
+        "label": "Allow private network integrations",
+        "type": "boolean",
+        "yaml_key": "allow_private_network_integrations"
+      },
+      {
+        "default": false,
+        "help": "Disable all outbound network blocking protections for integration requests.",
+        "key": "bypass_network_blocking",
+        "label": "Bypass network blocking",
+        "type": "boolean",
+        "yaml_key": "bypass_network_blocking"
+      },
+      {
+        "key": "vpp_install_reap_timeout",
+        "yaml_key": "vpp_install_reap_timeout",
+        "type": "duration",
+        "default": "24h",
+        "label": "VPP install reap timeout",
+        "help": "Minimum time a stuck App Store or in-house app install must have been activated before Fleet fails it to release the host's activity queue. Zero or less turns the reaper off, and a value below the VPP verify timeout is raised to it."
+      },
+      {
+        "key": "script_results_retention",
+        "yaml_key": "script_results_retention",
+        "type": "duration",
+        "default": "720h",
+        "label": "Script results retention",
+        "help": "Minimum time since a script run recorded its result before the hourly cleanup deletes it. Runs still waiting on a host, and those that locking, wiping, unlocking, setup experience, software uninstalls or batch runs depend on, are kept regardless. 0 disables the cleanup."
+      },
+      {
+        "key": "software_install_results_retention",
+        "yaml_key": "software_install_results_retention",
+        "type": "duration",
+        "default": "720h",
+        "label": "Software install results retention",
+        "help": "Minimum time since a software install or uninstall finished before the hourly cleanup deletes its record. Records a host is still working on, those setup experience depends on, and the most recent install and uninstall per host and package, are kept regardless. 0 disables the cleanup."
+      },
+      {
+        "key": "allow_request_certificate_any_idp",
+        "yaml_key": "allow_request_certificate_any_idp",
+        "type": "boolean",
+        "default": false,
+        "label": "Allow request certificate from any IdP",
+        "help": "Disables the request certificate API identity safeguards: accepts IdP credentials for any introspection endpoint and does not bind device-authenticated requests to the host's end user. Leave off unless you know you need it."
+      }
+    ],
+    "flag_prefix": "server",
+    "key": "server",
+    "title": "Server",
+    "yaml_key": "server"
+  },
+  {
+    "description": "User and host authentication/authorization behavior.",
+    "fields": [
+      {
+        "default": "15m",
+        "help": "How long an SSO login can take between initiation and callback.",
+        "key": "sso_session_validity_period",
+        "label": "SSO session validity period",
+        "type": "duration",
+        "yaml_key": "sso_session_validity_period"
+      },
+      {
+        "default": 12,
+        "help": "Bcrypt cost used when hashing user passwords.",
+        "key": "bcrypt_cost",
+        "label": "Bcrypt cost",
+        "type": "integer",
+        "yaml_key": "bcrypt_cost"
+      },
+      {
+        "default": 24,
+        "help": "Salt size used when hashing passwords. Plaintext password length plus this value must not exceed 72.",
+        "key": "salt_key_size",
+        "label": "Salt key size",
+        "type": "integer",
+        "yaml_key": "salt_key_size"
+      },
+      {
+        "default": false,
+        "help": "Premium. Requires HTTP message signatures on fleetd requests. Requires fleetd running with --fleet-managed-client-certificate and orbit 1.46.0+.",
+        "key": "require_http_message_signature",
+        "label": "Require HTTP message signature",
+        "type": "boolean",
+        "yaml_key": "require_http_message_signature"
+      },
+      {
+        "default": 0,
+        "help": "Requests per minute allowed to the SSO callback endpoint. 0 shares the login endpoint's rate-limit bucket.",
+        "key": "sso_rate_limit_per_minute",
+        "label": "SSO rate limit per minute",
+        "type": "integer",
+        "yaml_key": "sso_rate_limit_per_minute"
+      }
+    ],
+    "flag_prefix": "auth",
+    "key": "auth",
+    "title": "Auth",
+    "yaml_key": "auth"
+  },
+  {
+    "description": "Miscellaneous application-level behavior.",
+    "fields": [
+      {
+        "default": true,
+        "help": "Collect performance stats for scheduled/report queries from hosts. Live query stats are always collected.",
+        "key": "enable_scheduled_query_stats",
+        "label": "Enable scheduled query stats",
+        "type": "boolean",
+        "yaml_key": "enable_scheduled_query_stats"
+      },
+      {
+        "default": 24,
+        "help": "Size of generated app tokens.",
+        "key": "token_key_size",
+        "label": "Token key size",
+        "type": "integer",
+        "yaml_key": "token_key_size"
+      },
+      {
+        "default": "5d",
+        "help": "How long user invite tokens remain valid.",
+        "key": "invite_token_validity_period",
+        "label": "Invite token validity period",
+        "type": "duration",
+        "yaml_key": "invite_token_validity_period"
+      }
+    ],
+    "flag_prefix": "app",
+    "key": "app",
+    "title": "App",
+    "yaml_key": "app"
+  },
+  {
+    "description": "User login session behavior.",
+    "fields": [
+      {
+        "default": 64,
+        "help": "Size of generated session keys.",
+        "key": "key_size",
+        "label": "Key size",
+        "type": "integer",
+        "yaml_key": "key_size"
+      },
+      {
+        "default": "5d",
+        "help": "How long a login session lasts. Reset every time a user logs in.",
+        "key": "duration",
+        "label": "Duration",
+        "type": "duration",
+        "yaml_key": "duration"
+      }
+    ],
+    "flag_prefix": "session",
+    "key": "session",
+    "title": "Session",
+    "yaml_key": "session"
+  },
+  {
+    "description": "How Fleet identifies hosts, schedules queries, and receives logs from osquery/fleetd.",
+    "fields": [
+      {
+        "default": 24,
+        "help": "Size of the node key negotiated with osqueryd clients.",
+        "key": "node_key_size",
+        "label": "Node key size",
+        "type": "integer",
+        "yaml_key": "node_key_size"
+      },
+      {
+        "default": "provided",
+        "help": "Identifier used to determine host uniqueness; pairs with osquery's --host_identifier flag.",
+        "key": "host_identifier",
+        "label": "Host identifier",
+        "options": [
+          "provided",
+          "instance",
+          "uuid",
+          "hostname"
+        ],
+        "type": "select",
+        "yaml_key": "host_identifier"
+      },
+      {
+        "default": "0",
+        "help": "Cooldown before a host with the same identifier can re-enroll. 0 disables it.",
+        "key": "enroll_cooldown",
+        "label": "Enroll cooldown",
+        "type": "duration",
+        "yaml_key": "enroll_cooldown"
+      },
+      {
+        "default": "filesystem",
+        "help": "Log destination plugin for osquery status logs.",
+        "key": "status_log_plugin",
+        "label": "Status log plugin",
+        "options": [
+          "filesystem",
+          "firehose",
+          "kinesis",
+          "lambda",
+          "pubsub",
+          "kafkarest",
+          "nats",
+          "splunk",
+          "stdout"
+        ],
+        "type": "select",
+        "yaml_key": "status_log_plugin"
+      },
+      {
+        "default": "filesystem",
+        "help": "Log destination plugin for osquery result logs.",
+        "key": "result_log_plugin",
+        "label": "Result log plugin",
+        "options": [
+          "filesystem",
+          "firehose",
+          "kinesis",
+          "lambda",
+          "pubsub",
+          "kafkarest",
+          "nats",
+          "splunk",
+          "stdout"
+        ],
+        "type": "select",
+        "yaml_key": "result_log_plugin"
+      },
+      {
+        "default": "1h",
+        "help": "Interval fleetd refreshes label query results. Lower values increase server load significantly — proceed with caution.",
+        "key": "label_update_interval",
+        "label": "Label update interval",
+        "type": "duration",
+        "yaml_key": "label_update_interval"
+      },
+      {
+        "default": "1h",
+        "help": "Interval fleetd refreshes policy query results.",
+        "key": "policy_update_interval",
+        "label": "Policy update interval",
+        "type": "duration",
+        "yaml_key": "policy_update_interval"
+      },
+      {
+        "default": "1h",
+        "help": "Interval fleetd refreshes host detail data (uptime, hostname, network interfaces, etc.).",
+        "key": "detail_update_interval",
+        "label": "Detail update interval",
+        "type": "duration",
+        "yaml_key": "detail_update_interval"
+      },
+      {
+        "default": 10,
+        "help": "Adds randomized jitter, as a percentage of the interval, to update intervals so hosts don't all check in at once.",
+        "key": "max_jitter_percent",
+        "label": "Max jitter percent",
+        "type": "integer",
+        "yaml_key": "max_jitter_percent"
+      },
+      {
+        "default": "false",
+        "help": "Experimental. Enables async processing of host report results: label_membership, policy_membership, host_last_seen, scheduled_query_stats. Accepts a single true/false, or a per-task string like label_membership=true&policy_membership=true.",
+        "key": "enable_async_host_processing",
+        "label": "Enable async host processing",
+        "type": "string",
+        "yaml_key": "enable_async_host_processing"
+      },
+      {
+        "default": "30s",
+        "help": "Interval for async host data collection. Accepts a single duration, or a per-task string.",
+        "key": "async_host_collect_interval",
+        "label": "Async host collect interval",
+        "type": "string",
+        "yaml_key": "async_host_collect_interval"
+      },
+      {
+        "default": 10,
+        "help": "Jitter percentage applied to the async collection interval.",
+        "key": "async_host_collect_max_jitter_percent",
+        "label": "Async host collect max jitter percent",
+        "type": "integer",
+        "yaml_key": "async_host_collect_max_jitter_percent"
+      },
+      {
+        "default": "1m",
+        "help": "Timeout of the exclusive lock held during async collection. Accepts a single duration, or a per-task string.",
+        "key": "async_host_collect_lock_timeout",
+        "label": "Async host collect lock timeout",
+        "type": "string",
+        "yaml_key": "async_host_collect_lock_timeout"
+      },
+      {
+        "default": "1m",
+        "help": "Interval to log async collection stats. 0 disables logging.",
+        "key": "async_host_collect_log_stats_interval",
+        "label": "Async host collect log stats interval",
+        "type": "duration",
+        "yaml_key": "async_host_collect_log_stats_interval"
+      },
+      {
+        "default": 2000,
+        "help": "Batch size for async inserts.",
+        "key": "async_host_insert_batch",
+        "label": "Async host insert batch",
+        "type": "integer",
+        "yaml_key": "async_host_insert_batch"
+      },
+      {
+        "default": 2000,
+        "help": "Batch size for async deletes.",
+        "key": "async_host_delete_batch",
+        "label": "Async host delete batch",
+        "type": "integer",
+        "yaml_key": "async_host_delete_batch"
+      },
+      {
+        "default": 1000,
+        "help": "Batch size for async updates.",
+        "key": "async_host_update_batch",
+        "label": "Async host update batch",
+        "type": "integer",
+        "yaml_key": "async_host_update_batch"
+      },
+      {
+        "default": 1000,
+        "help": "Maximum items popped from Redis per batch in async collection.",
+        "key": "async_host_redis_pop_count",
+        "label": "Async host Redis pop count",
+        "type": "integer",
+        "yaml_key": "async_host_redis_pop_count"
+      },
+      {
+        "default": 1000,
+        "help": "Order of magnitude of keys scanned per ZSCAN/SSCAN in async collection.",
+        "key": "async_host_redis_scan_keys_count",
+        "label": "Async host Redis scan keys count",
+        "type": "integer",
+        "yaml_key": "async_host_redis_scan_keys_count"
+      },
+      {
+        "default": "2m",
+        "help": "Minimum time delta on a software's last-opened timestamp before Fleet writes an update, to reduce database load.",
+        "key": "min_software_last_opened_at_diff",
+        "label": "Min software last opened at diff",
+        "type": "duration",
+        "yaml_key": "min_software_last_opened_at_diff"
+      },
+      {
+        "default": "0",
+        "help": "Max request body size for /api/osquery/log. 0 uses the built-in default (10MiB). Only applies when body auth fallback is allowed.",
+        "key": "max_log_write_body_size",
+        "label": "Max log write body size",
+        "type": "bytesize",
+        "yaml_key": "max_log_write_body_size"
+      },
+      {
+        "default": "0",
+        "help": "Max request body size for /api/osquery/distributed/write. 0 uses the built-in default (5MiB). Only applies when body auth fallback is allowed.",
+        "key": "max_distributed_write_body_size",
+        "label": "Max distributed write body size",
+        "type": "bytesize",
+        "yaml_key": "max_distributed_write_body_size"
+      },
+      {
+        "default": true,
+        "help": "true: authenticate osquery requests using the node_key in the request body (legacy). false: require the Authorization: NodeKey header instead.",
+        "key": "allow_body_auth_fallback",
+        "label": "Allow body auth fallback",
+        "type": "boolean",
+        "yaml_key": "allow_body_auth_fallback"
+      },
+      {
+        "key": "config_etags",
+        "yaml_key": "config_etags",
+        "type": "boolean",
+        "default": false,
+        "label": "Config ETags",
+        "help": "Enable conditional osquery config requests: agents that send an ETag receive the minimal 'unchanged' body when their config is current. While off, every response is the full config with no ETag."
+      },
+      {
+        "key": "redis_config_etags",
+        "yaml_key": "redis_config_etags",
+        "type": "boolean",
+        "default": false,
+        "label": "Redis config ETags",
+        "help": "Answer osquery config requests whose ETag matches from a Redis-backed ETag store, skipping the config build and its database reads. Requires Redis and also requires config ETags to be enabled."
+      },
+      {
+        "key": "config_in_memory_cache",
+        "yaml_key": "config_in_memory_cache",
+        "type": "boolean",
+        "default": false,
+        "label": "Config in-memory cache",
+        "help": "Cache the scheduled-report section of the osquery config in memory, keyed by fleet and the query reports disabled setting, instead of rebuilding it from the database on every check-in. The rest of the response is never cached."
+      },
+      {
+        "key": "max_concurrent_query_report_reads",
+        "yaml_key": "max_concurrent_query_report_reads",
+        "type": "integer",
+        "default": 40,
+        "label": "Max concurrent query report reads",
+        "help": "Maximum number of osquery log requests per Fleet server that read a host's stored report results from the database at once, to skip writing unchanged results. Requests over the limit skip storing report results. 0 disables the limit."
+      },
+      {
+        "key": "max_concurrent_query_report_writes",
+        "yaml_key": "max_concurrent_query_report_writes",
+        "type": "integer",
+        "default": 20,
+        "label": "Max concurrent query report writes",
+        "help": "Maximum number of osquery log requests across all Fleet servers that write changed report results to the database at once. Requests over the limit skip storing their changed results. 0 disables the limit."
+      }
+    ],
+    "flag_prefix": "osquery",
+    "key": "osquery",
+    "title": "Osquery",
+    "yaml_key": "osquery"
+  },
+  {
+    "description": "Premium. Streaming Fleet user activity to an external log destination for audit purposes.",
+    "fields": [
+      {
+        "default": false,
+        "help": "Premium. Enables logging of Fleet user activity/audit events.",
+        "key": "enable_audit_log",
+        "label": "Enable audit log",
+        "type": "boolean",
+        "yaml_key": "enable_audit_log"
+      },
+      {
+        "default": "filesystem",
+        "help": "Log destination plugin for audit events. Only applies when audit log is enabled.",
+        "key": "audit_log_plugin",
+        "label": "Audit log plugin",
+        "options": [
+          "filesystem",
+          "firehose",
+          "kinesis",
+          "lambda",
+          "pubsub",
+          "kafkarest",
+          "nats",
+          "splunk",
+          "stdout"
+        ],
+        "type": "select",
+        "yaml_key": "audit_log_plugin"
+      },
+      {
+        "key": "fleet_initiated_release_per_minute",
+        "yaml_key": "fleet_initiated_release_per_minute",
+        "type": "integer",
+        "default": 1000,
+        "label": "Fleet-initiated release per minute",
+        "help": "Maximum number of hosts whose Fleet-initiated activities (policy automation installs and scripts) are released for execution per minute. 0 means unlimited."
+      }
+    ],
+    "flag_prefix": "activity",
+    "key": "activity",
+    "title": "Activity",
+    "yaml_key": "activity"
+  },
+  {
+    "description": "Fleet server's own operational logging (not osquery status/result logs).",
+    "fields": [
+      {
+        "default": false,
+        "help": "Enable debug-level logging.",
+        "key": "debug",
+        "label": "Debug",
+        "type": "boolean",
+        "yaml_key": "debug"
+      },
+      {
+        "default": false,
+        "help": "Log in JSON format.",
+        "key": "json",
+        "label": "JSON",
+        "type": "boolean",
+        "yaml_key": "json"
+      },
+      {
+        "default": false,
+        "help": "Suppress the startup banner.",
+        "key": "disable_banner",
+        "label": "Disable banner",
+        "type": "boolean",
+        "yaml_key": "disable_banner"
+      },
+      {
+        "default": "24h",
+        "help": "How long unique errors are retained (in Redis) for troubleshooting. 0 means no expiration, a negative value disables storage.",
+        "key": "error_retention_period",
+        "label": "Error retention period",
+        "type": "duration",
+        "yaml_key": "error_retention_period"
+      },
+      {
+        "default": false,
+        "help": "Enable trace export.",
+        "key": "tracing_enabled",
+        "label": "Tracing enabled",
+        "type": "boolean",
+        "yaml_key": "tracing_enabled"
+      },
+      {
+        "default": "",
+        "help": "Trace backend: leave blank for OpenTelemetry (default), or set to elasticapm for Elastic APM.",
+        "key": "tracing_type",
+        "label": "Tracing type",
+        "type": "string",
+        "yaml_key": "tracing_type"
+      },
+      {
+        "default": false,
+        "help": "Also export logs to an OpenTelemetry collector. Requires tracing to be enabled.",
+        "key": "otel_logs_enabled",
+        "label": "OTel logs enabled",
+        "type": "boolean",
+        "yaml_key": "otel_logs_enabled"
+      },
+      {
+        "default": "",
+        "help": "Comma-delimited log topics to enable, e.g. deprecated-field-names.",
+        "key": "enable_topics",
+        "label": "Enable topics",
+        "type": "string",
+        "yaml_key": "enable_topics"
+      },
+      {
+        "default": "",
+        "help": "Comma-delimited log topics to disable. A topic listed in both enable and disable is enabled.",
+        "key": "disable_topics",
+        "label": "Disable topics",
+        "type": "string",
+        "yaml_key": "disable_topics"
+      }
+    ],
+    "flag_prefix": "logging",
+    "key": "logging",
+    "title": "Logging",
+    "yaml_key": "logging"
+  },
+  {
+    "description": "Fleet Premium licensing.",
+    "fields": [
+      {
+        "default": "",
+        "help": "Fleet Premium license key.",
+        "key": "key",
+        "label": "License key",
+        "type": "password",
+        "yaml_key": "key"
+      },
+      {
+        "default": false,
+        "help": "Enforce the enrolled-host limit associated with the license.",
+        "key": "enforce_host_limit",
+        "label": "Enforce host limit",
+        "type": "boolean",
+        "yaml_key": "enforce_host_limit"
+      }
+    ],
+    "flag_prefix": "license",
+    "key": "license",
+    "title": "License",
+    "yaml_key": "license"
+  }
+]
