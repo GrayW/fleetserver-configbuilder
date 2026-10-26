@@ -1294,14 +1294,6 @@
         "label": "License key",
         "type": "password",
         "yaml_key": "key"
-      },
-      {
-        "default": false,
-        "help": "Enforce the enrolled-host limit associated with the license.",
-        "key": "enforce_host_limit",
-        "label": "Enforce host limit",
-        "type": "boolean",
-        "yaml_key": "enforce_host_limit"
       }
     ],
     "flag_prefix": "license",
